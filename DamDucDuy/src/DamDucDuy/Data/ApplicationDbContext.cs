@@ -18,9 +18,17 @@ namespace DamDucDuy.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            // Customize the ASP.NET Identity model and override the defaults if needed.
-            // For example, you can rename the ASP.NET Identity table names and more.
-            // Add your customizations after calling base.OnModelCreating(builder);
+            builder.Entity<Person>().ToTable("Person");
+            builder.Entity<Question>().ToTable("Question");
+            builder.Entity<Answer>().ToTable("Answer");
+            builder.Entity<Tag>().ToTable("Tag");
+            builder.Entity<Support>().ToTable("Support");
         }
+        public DbSet<Person> Persons { get; set; }
+        public DbSet<Question> Questions { get; set; }
+        public DbSet<Answer> Answers { get; set; }
+        public DbSet<Tag> Tags { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Support> Supports { get; set; }
     }
 }
