@@ -1,0 +1,40 @@
+@model Test.Models.Question
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Question</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.QuestionDescription)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.QuestionDescription)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.QuestionTitle)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.QuestionTitle)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.QuestionVote)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.QuestionVote)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </form>
+</div>
