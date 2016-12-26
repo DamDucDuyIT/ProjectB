@@ -1,0 +1,52 @@
+@model Test.Models.Question
+
+@{
+    ViewData["Title"] = "Ask";
+}
+
+<h2>Ask Question</h2>
+
+<form asp-action="Ask">
+    <div class="form-horizontal">
+        <h4>Question</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="form-group">
+            <label asp-for="QuestionTitle" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="QuestionTitle" class="form-control" />
+                <span asp-validation-for="QuestionTitle" class="text-danger" ></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="QuestionDescription" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <textarea asp-for="QuestionDescription" class="form-control"></textarea>
+                <span asp-validation-for="QuestionDescription" class="text-danger"></span>
+            </div>
+        </div>
+      
+        <div class="form-group">
+            <label class="col-md-2 control-label">Tags</label>
+            <div class="col-md-10">
+                <input name="selectedTags"/>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Submit Question" class="btn btn-default"/>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

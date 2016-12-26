@@ -1,0 +1,2 @@
+D:\ProjectB\Test\Test\bin\Debug\Test.exe.config
+D:\ProjectB\ProjectB\Test\Test\bin\Debug\Test.exe.config

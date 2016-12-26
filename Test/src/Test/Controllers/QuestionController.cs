@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Test.Data;
 using Test.Models;
+using System.Text.RegularExpressions;
 
 namespace Test.Controllers
 {
@@ -43,7 +44,7 @@ namespace Test.Controllers
         }
 
         // GET: Question/Create
-        public IActionResult Create()
+        public IActionResult Ask()
         {
             return View();
         }
@@ -53,11 +54,34 @@ namespace Test.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("QuestionID,QuestionDescription,QuestionTitle,QuestionVote")] Question question)
+        public async Task<IActionResult> Ask([Bind("QuestionID,QuestionDescription,QuestionTitle")] Question question,string selectedTags)
         {
             if (ModelState.IsValid)
             {
+                question.Answers = new List<Answer>();
+                question.Comments = new List<Comment>();
+                question.Supports = new List<Support>();
+                question.QuestionVote = 0;
                 _context.Add(question);
+               
+                List<String> selectedTagHS = Regex.Split(selectedTags, @"\W+").ToList();
+
+
+                foreach (var tag in selectedTagHS)
+                {
+                    if (_context.Tags.Any(t => t.TagName == tag))
+                    {
+                        question.Supports.Add(new Support { TagID = _context.Tags.FirstOrDefault(t=>t.TagName==tag).TagID, QuestionID = question.QuestionID });
+                        await _context.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        _context.Tags.Add(new Tag { TagName=tag});
+                        await _context.SaveChangesAsync();
+                        question.Supports.Add(new Support { TagID = _context.Tags.FirstOrDefault(t => t.TagName == tag).TagID, QuestionID = question.QuestionID });
+                        await _context.SaveChangesAsync();
+                    }
+                }
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }

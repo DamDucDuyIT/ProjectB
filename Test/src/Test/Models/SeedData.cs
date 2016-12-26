@@ -59,11 +59,12 @@ namespace Test.Models
                 );
             context.SaveChanges();
 
-            var supports = new Support[]
-            {
-                new Support {TagID =cSharp.TagID, QuestionID=question1.QuestionID },
-                 new Support {TagID =java.TagID, QuestionID=question2.QuestionID }
-            };
+
+            Support sp1 = new Support { TagID = cSharp.TagID, QuestionID = question1.QuestionID };
+            Support sp2 = new Support { TagID = java.TagID, QuestionID = question2.QuestionID };
+            
+            context.Supports.AddRange(sp1,sp2);
+            context.SaveChanges();
         }
     }
 }
