@@ -23,7 +23,12 @@ namespace Test.Controllers
         // GET: Question
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Questions.ToListAsync());
+            return View(await _context.Questions
+                .Include(s=>s.Supports)
+                    .ThenInclude(t=>t.Tag)
+                .ToListAsync());
+            
+
         }
 
         // GET: Question/Details/5

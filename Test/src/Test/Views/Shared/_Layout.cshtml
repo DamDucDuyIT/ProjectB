@@ -76,7 +76,7 @@
                 <div class="collapse navbar-collapse navbar-right">
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="Default.aspx">Trang chủ</a></li>
-                        <li><a href="portfolio.aspx">Câu hỏi</a></li>
+                        <li><a asp-action="Index" asp-controller="Question">Câu hỏi</a></li>
                         <li><a href="services.aspx">Tag</a></li>
                         @*<li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Pages <i class="fa fa-angle-down"></i></a>
@@ -176,6 +176,28 @@
         </div>
         <a href="#" class="back-to-top"><i class="fa fa-2x fa-angle-up"></i></a>
     </footer>
+
+    <!-- Back To Top -->
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            var offset = 300;
+            var duration = 500;
+            jQuery(window).scroll(function () {
+                if (jQuery(this).scrollTop() > offset) {
+                    jQuery('.back-to-top').fadeIn(duration);
+                } else {
+                    jQuery('.back-to-top').fadeOut(duration);
+                }
+            });
+
+            jQuery('.back-to-top').click(function (event) {
+                event.preventDefault();
+                jQuery('html, body').animate({ scrollTop: 0 }, duration);
+                return false;
+            })
+        });
+    </script>
+
     <environment names="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
