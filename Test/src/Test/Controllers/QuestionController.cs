@@ -39,7 +39,8 @@ namespace Test.Controllers
                 return NotFound();
             }
 
-            var question = await _context.Questions.SingleOrDefaultAsync(m => m.QuestionID == id);
+            var question = await _context.Questions.Include(s => s.Supports)
+                    .ThenInclude(t => t.Tag).SingleOrDefaultAsync(m => m.QuestionID == id);
             if (question == null)
             {
                 return NotFound();
@@ -47,6 +48,8 @@ namespace Test.Controllers
 
             return View(question);
         }
+
+
 
         // GET: Question/Create
         public IActionResult Ask()
@@ -143,6 +146,22 @@ namespace Test.Controllers
             }
             return View(question);
         }
+
+        public async Task<IActionResult> Vote(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var question = await _context.Questions.SingleOrDefaultAsync(m => m.QuestionID == id);
+            question.QuestionVote++;
+            _context.Update(question);
+            await _context.SaveChangesAsync();
+            
+            return RedirectToAction("Details",new { id = id });
+        }
+
 
         // GET: Question/Delete/5
         public async Task<IActionResult> Delete(int? id)

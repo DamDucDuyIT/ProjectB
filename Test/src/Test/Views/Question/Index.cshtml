@@ -3,50 +3,62 @@
 @{
     ViewData["Title"] = "Index";
 }
+<div class="row col-lg-offset-8">
+    <ul class="nav navbar-nav">
+        <li class="active"><a>Latest</a></li>
+        <li><a>Hot</a></li>
+        <li><a>Interesting</a></li>
+    </ul>
+  
+</div>
+<hr />
+   
 
-<h2>Index</h2>
+    <p>
+        <a asp-action="Ask">Ask a question</a>
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.QuestionTitle)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.QuestionVote)
+                </th>
+                <th>
+                    Tags
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.QuestionTitle)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.QuestionVote)
-            </th>
-            <th>
-                Tags
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-        
-            <td>
-                <a asp-action="Details" asp-route-id="@item.QuestionID">@Html.DisplayFor(modelItem => item.QuestionTitle)</a>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.QuestionVote)
-            </td>
-            <td>
-                @foreach (var tag in item.Supports)
-                {
-                    <a>@tag.Tag.TagName |</a> 
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.QuestionID">@Html.DisplayFor(modelItem => item.QuestionTitle)</a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.QuestionVote)
+                    </td>
+                    <td>
+                        
+                            @foreach (var tag in item.Supports)
+                            {
+                                <a asp-controller="Tag" asp-action="Index" asp-route-tagName="@tag.Tag.TagName">@tag.Tag.TagName |</a>
 
-                }
-            </td>
-            @*<td>
-                <a asp-action="Edit" asp-route-id="@item.QuestionID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.QuestionID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.QuestionID">Delete</a>
-            </td>*@
-        </tr>
-}
-    </tbody>
-</table>
+                            }
+                        
+                      
+                    </td>
+                    @*<td>
+                            <a asp-action="Edit" asp-route-id="@item.QuestionID">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.QuestionID">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.QuestionID">Delete</a>
+                        </td>*@
+                </tr>
+            }
+        </tbody>
+    </table>
