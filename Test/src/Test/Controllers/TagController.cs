@@ -22,9 +22,17 @@ namespace Test.Controllers
         // GET: Tag
         public async Task<IActionResult> Index(String tagName)
         {
-            IQueryable<Support> qryTags = _context.Supports.Include(t=>t.Tag)
-                        
-                .Include(q=>q.Question).ThenInclude(s=>s.Supports).ThenInclude(a=>a.Tag);
+            IQueryable<Tag> qryTags = _context.Tags.Include(s=>s.Supports);
+
+
+            return View(await qryTags.ToListAsync());
+        }
+
+        public async Task<IActionResult> Tagged(String tagName)
+        {
+            IQueryable<Support> qryTags = _context.Supports.Include(t => t.Tag)
+
+                .Include(q => q.Question).ThenInclude(s => s.Supports).ThenInclude(a => a.Tag);
 
             qryTags = qryTags.Where(t => t.Tag.TagName == tagName);
 

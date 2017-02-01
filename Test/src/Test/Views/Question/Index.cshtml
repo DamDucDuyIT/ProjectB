@@ -47,7 +47,7 @@
                         
                             @foreach (var tag in item.Supports)
                             {
-                                <a asp-controller="Tag" asp-action="Index" asp-route-tagName="@tag.Tag.TagName">@tag.Tag.TagName |</a>
+                                <a asp-controller="Tag" asp-action="Tagged" asp-route-tagName="@tag.Tag.TagName">@tag.Tag.TagName |</a>
 
                             }
                         

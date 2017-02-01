@@ -17,9 +17,11 @@
         <div class="row">
             @foreach (var tag in Model.Supports)
             {
-                <a>@tag.Tag.TagName |</a>
+                <a asp-controller="Tag" asp-action="Tagged" asp-route-tagName="@tag.Tag.TagName">@tag.Tag.TagName |</a>
             }
         </div>
+
+     
 
         <div class="row">
             <form asp-action="Vote">
