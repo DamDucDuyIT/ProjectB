@@ -1,0 +1,65 @@
+﻿@model Test.Models.Person
+
+
+
+
+
+    <div>
+        <h4>Person</h4>
+        <hr />
+        <dl class="dl-horizontal">
+          
+           
+            <dt>
+                @Html.DisplayNameFor(model => model.PersonDisplayName)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.PersonDisplayName)
+            </dd>
+         
+            <dt>
+                @Html.DisplayNameFor(model => model.PersonFirstName)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.PersonFirstName)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.PersonLastName)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.PersonLastName)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.PersonLocation)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.PersonLocation)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.PersonBirthday)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.PersonBirthday)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.PersonCareer)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.PersonCareer)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.PersonAbout)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.PersonAbout)
+            </dd>
+        </dl>
+    </div>
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.PersonID">Edit</a> |
+        <a asp-action="Index">Back to List</a>
+    </div>
+
+

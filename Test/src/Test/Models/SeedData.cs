@@ -32,9 +32,9 @@ namespace Test.Models
 
 
 
-            Person person1 = new Person { PersonDisplayName = "Đàm Đức Duy", PersonLastName = "Đàm", PersonFirstName = "Đức Duy", PersonLocation = "Thủ Dầu Một, Bình Dương", PersonAbout = "yêu thiên nhiên, thích lập trình", PersonBirthday = DateTime.Parse("1995-10-18"), PersonEmail = "duy.dam.k3set@eiu.edu.vn", PersonCareer = "Student" };
-            Person person2 = new Person { PersonDisplayName = "Trần Phúc Hậu", PersonLastName = "Trần", PersonFirstName = "Phúc Hậu", PersonLocation = "Bình Dương", PersonAbout = "yêu mèo, thích con trai", PersonBirthday = DateTime.Parse("1995-08-11"), PersonEmail = "hau.tran.k3set@eiu.edu.vn", PersonCareer = "Student" };
-            Person person3 = new Person { PersonDisplayName = "Tất Quảng Phát", PersonLastName = "Tất", PersonFirstName = "Quảng Phát", PersonLocation = "Hồ Chí Minh", PersonAbout = "giáo viên EIU", PersonBirthday = DateTime.Parse("1969-09-02"), PersonEmail = "phat.tat@eiu.edu.vn", PersonCareer = "Lecturer" };
+            Person person1 = new Person { PersonNickname="DuyVoDoi", PersonDisplayName = "Đàm Đức Duy", PersonLastName = "Đàm", PersonFirstName = "Đức Duy", PersonLocation = "Thủ Dầu Một, Bình Dương", PersonAbout = "yêu thiên nhiên, thích lập trình", PersonBirthday = DateTime.Parse("1995-10-18"), PersonEmail = "duy.dam.k3set@eiu.edu.vn", PersonCareer = "Student" };
+            Person person2 = new Person { PersonNickname = "Sun Shin", PersonDisplayName = "Trần Phúc Hậu", PersonLastName = "Trần", PersonFirstName = "Phúc Hậu", PersonLocation = "Bình Dương", PersonAbout = "yêu mèo, thích con trai", PersonBirthday = DateTime.Parse("1995-08-11"), PersonEmail = "hau.tran.k3set@eiu.edu.vn", PersonCareer = "Student" };
+            Person person3 = new Person { PersonNickname = "Best Teacher", PersonDisplayName = "Tất Quảng Phát", PersonLastName = "Tất", PersonFirstName = "Quảng Phát", PersonLocation = "Hồ Chí Minh", PersonAbout = "giáo viên EIU", PersonBirthday = DateTime.Parse("1969-09-02"), PersonEmail = "phat.tat@eiu.edu.vn", PersonCareer = "Lecturer" };
 
             context.Persons.AddRange(person1, person2, person3);
             context.SaveChanges();

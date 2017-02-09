@@ -1,0 +1,50 @@
+@model IEnumerable<Test.Models.Person>
+
+@{
+    ViewData["Title"] = "User";
+}
+
+<div class="row col-lg-offset-8">
+    <ul class="nav navbar-nav">
+        <li class="active"><a>Users</a></li>
+        <li><a asp-controller="Person" asp-action="Profile">Profile</a></li>
+        <li><a>Activity</a></li>
+    </ul>
+
+</div>
+<hr />
+
+
+
+
+    <div class="container">
+        <table>
+            <tr>
+                @{
+                    int cnt = 0;
+                    foreach (var item in Model)
+                    {
+                        if (cnt++ % 3 == 0)
+                        {
+                            @:</tr><tr>
+                }
+                        <td style="width: 520px;
+                       border-bottom: 1px dotted #E4E6E7;
+                       padding-bottom: 12px;
+                padding-right: 6px;
+                padding-top: 6px;
+                vertical-align: top;">
+                            <a class="post-tag" asp-controller="Person" asp-action="Details"><h2>@item.PersonNickname</h2></a>
+
+
+                        </td>
+                    }@:</tr>
+
+
+
+
+                }
+
+            </table>
+        </div>
+

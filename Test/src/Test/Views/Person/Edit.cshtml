@@ -1,0 +1,88 @@
+@model Test.Models.Person
+
+
+
+
+
+<form asp-action="Edit">
+    <div class="form-horizontal">
+        <h4>Person</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="PersonID" />
+      
+
+
+
+            <div class="form-group">
+                <label asp-for="PersonDisplayName" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="PersonDisplayName" class="form-control" />
+                    <span asp-validation-for="PersonDisplayName" class="text-danger" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="PersonFirstName" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="PersonFirstName" class="form-control" />
+                    <span asp-validation-for="PersonFirstName" class="text-danger" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="PersonLastName" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="PersonLastName" class="form-control" />
+                    <span asp-validation-for="PersonLastName" class="text-danger" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="PersonBirthday" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="PersonBirthday" class="form-control" />
+                    <span asp-validation-for="PersonBirthday" class="text-danger" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="PersonLocation" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="PersonLocation" class="form-control" />
+                    <span asp-validation-for="PersonLocation" class="text-danger" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="PersonCareer" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="PersonCareer" class="form-control" />
+                    <span asp-validation-for="PersonCareer" class="text-danger" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="PersonAbout" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <textarea asp-for="PersonAbout" class="form-control"></textarea>
+                    <span asp-validation-for="PersonAbout" class="text-danger" />
+                </div>
+            </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

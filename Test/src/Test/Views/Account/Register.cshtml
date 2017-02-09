@@ -11,21 +11,21 @@
     <div asp-validation-summary="All" class="text-danger"></div>
     <div class="form-group">
         <label asp-for="Email" class="col-md-2 control-label"></label>
-        <div class="col-md-10">
+        <div class="col-md-8">
             <input asp-for="Email" class="form-control" />
             <span asp-validation-for="Email" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group">
         <label asp-for="Password" class="col-md-2 control-label"></label>
-        <div class="col-md-10">
+        <div class="col-md-8">
             <input asp-for="Password" class="form-control" />
             <span asp-validation-for="Password" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group">
         <label asp-for="ConfirmPassword" class="col-md-2 control-label"></label>
-        <div class="col-md-10">
+        <div class="col-md-8">
             <input asp-for="ConfirmPassword" class="form-control" />
             <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
         </div>
@@ -36,6 +36,7 @@
         </div>
     </div>
 </form>
+<h2>Chú ý, sau khi đăng ký thành công, vui lòng vào User -> Profile cập nhật thông tin để sử dụng những tính năng cơ bản</h2>
 
 @section Scripts {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
