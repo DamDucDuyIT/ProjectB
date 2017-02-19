@@ -8,16 +8,20 @@ using Microsoft.EntityFrameworkCore;
 using Test.Data;
 using Test.Models;
 using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace Test.Controllers
 {
     public class QuestionController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public QuestionController(ApplicationDbContext context)
+        public QuestionController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
-            _context = context;    
+            _context = context;
+            _userManager = userManager;  
         }
 
         // GET: Question
@@ -39,8 +43,13 @@ namespace Test.Controllers
                 return NotFound();
             }
 
-            var question = await _context.Questions.Include(s => s.Supports)
-                    .ThenInclude(t => t.Tag).SingleOrDefaultAsync(m => m.QuestionID == id);
+            var question = await _context.Questions
+                .Include(a=>a.Answers)
+                    .ThenInclude(o=>o.Person)
+                .Include(p=>p.Person)
+                .Include(s => s.Supports)
+                    .ThenInclude(t => t.Tag)
+                    .SingleOrDefaultAsync(m => m.QuestionID == id);
             if (question == null)
             {
                 return NotFound();
@@ -52,6 +61,7 @@ namespace Test.Controllers
 
 
         // GET: Question/Create
+        [Authorize]
         public IActionResult Ask()
         {
             return View();
@@ -70,6 +80,12 @@ namespace Test.Controllers
                 question.Comments = new List<Comment>();
                 question.Supports = new List<Support>();
                 question.QuestionVote = 0;
+
+
+                var user = await GetCurrentUserAsync();
+                var userEmail = user.Email;
+                var person = _context.Persons.FirstOrDefault(m => m.PersonEmail == userEmail);
+                question.Person = person;
                 _context.Add(question);
                
                 List<String> selectedTagHS = Regex.Split(selectedTags, @"\W+").ToList();
@@ -162,6 +178,34 @@ namespace Test.Controllers
             return RedirectToAction("Details",new { id = id });
         }
 
+        public async Task<IActionResult> TakeAnswer(int? id,string answerText)
+        {
+            ViewData["answerText"] = answerText;
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var question = await _context.Questions.SingleOrDefaultAsync(m => m.QuestionID == id);
+
+            var user = await GetCurrentUserAsync();
+            var userEmail = user.Email;
+            var person = _context.Persons.FirstOrDefault(m => m.PersonEmail == userEmail);
+
+            Answer answer = new Answer();
+            answer.AnswerDescription = answerText;
+            answer.Vote = 0;
+            answer.Person = person;
+            answer.Question = question;
+            _context.Add(answer);
+            await _context.SaveChangesAsync();
+
+            question.Answers.Add(answer);
+            _context.Update(question);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Details", new { id = id });
+        }
 
         // GET: Question/Delete/5
         public async Task<IActionResult> Delete(int? id)
@@ -195,5 +239,11 @@ namespace Test.Controllers
         {
             return _context.Questions.Any(e => e.QuestionID == id);
         }
+
+        private Task<ApplicationUser> GetCurrentUserAsync()
+        {
+            return _userManager.GetUserAsync(HttpContext.User);
+        }
+
     }
 }

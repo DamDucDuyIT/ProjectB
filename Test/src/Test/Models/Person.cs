@@ -20,6 +20,9 @@ namespace Test.Models
     public String PersonLocation { get; set; }
         public String PersonAbout { get; set; }
         public String PersonEmail { get; set; }
+
+        
+        [DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime PersonBirthday { get; set; }
         public String PersonCareer { get; set; }
         public bool Actived { get; set; }

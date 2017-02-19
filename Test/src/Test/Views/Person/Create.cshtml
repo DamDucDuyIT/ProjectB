@@ -1,44 +1,12 @@
 @model Test.Models.Person
 
-@{
-    Layout = null;
-}
-
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Create</title>
-</head>
-<body>
 
 <form asp-action="Create">
     <div class="form-horizontal">
         <h4>Person</h4>
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="form-group">
-            <label asp-for="PersonAbout" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="PersonAbout" class="form-control" />
-                <span asp-validation-for="PersonAbout" class="text-danger" />
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="PersonBirthday" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="PersonBirthday" class="form-control" />
-                <span asp-validation-for="PersonBirthday" class="text-danger" />
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="PersonCareer" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="PersonCareer" class="form-control" />
-                <span asp-validation-for="PersonCareer" class="text-danger" />
-            </div>
-        </div>
+     
         <div class="form-group">
             <label asp-for="PersonDisplayName" class="col-md-2 control-label"></label>
             <div class="col-md-10">
@@ -46,13 +14,7 @@
                 <span asp-validation-for="PersonDisplayName" class="text-danger" />
             </div>
         </div>
-        <div class="form-group">
-            <label asp-for="PersonEmail" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="PersonEmail" class="form-control" />
-                <span asp-validation-for="PersonEmail" class="text-danger" />
-            </div>
-        </div>
+
         <div class="form-group">
             <label asp-for="PersonFirstName" class="col-md-2 control-label"></label>
             <div class="col-md-10">
@@ -60,6 +22,7 @@
                 <span asp-validation-for="PersonFirstName" class="text-danger" />
             </div>
         </div>
+
         <div class="form-group">
             <label asp-for="PersonLastName" class="col-md-2 control-label"></label>
             <div class="col-md-10">
@@ -67,6 +30,25 @@
                 <span asp-validation-for="PersonLastName" class="text-danger" />
             </div>
         </div>
+
+        <div class="form-group">
+            <label asp-for="PersonBirthday" class="col-md-2 control-label"></label>
+            <div class="col-md-10" id='datetimepicker1'>
+                <input asp-for="PersonBirthday" class="form-control" type="text" id="datepicker" runat="server"/>
+             
+                <span asp-validation-for="PersonBirthday" class="text-danger" />
+            </div>
+            <script>
+        $(function () {
+            $("#datepicker").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: 'dd-mm-yy'
+            });
+        });
+            </script>
+        </div>
+
         <div class="form-group">
             <label asp-for="PersonLocation" class="col-md-2 control-label"></label>
             <div class="col-md-10">
@@ -74,6 +56,23 @@
                 <span asp-validation-for="PersonLocation" class="text-danger" />
             </div>
         </div>
+
+        <div class="form-group">
+            <label asp-for="PersonCareer" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="PersonCareer" class="form-control" />
+                <span asp-validation-for="PersonCareer" class="text-danger" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="PersonAbout" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <textarea asp-for="PersonAbout" class="form-control"></textarea>
+                <span asp-validation-for="PersonAbout" class="text-danger" />
+            </div>
+        </div>
+
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Create" class="btn btn-default" />
@@ -89,5 +88,3 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
-</body>
-</html>

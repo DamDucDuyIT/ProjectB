@@ -9,9 +9,11 @@ using Test.Data;
 using Test.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Collections;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Test.Controllers
 {
+    [Authorize]
     public class PersonController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -27,6 +29,7 @@ namespace Test.Controllers
         }
 
         // GET: Person
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             IQueryable<Person> persons = _context.Persons.Where(p => p.Actived == true);
@@ -49,6 +52,7 @@ namespace Test.Controllers
         }
 
         // GET: Person/Details/5
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -80,6 +84,8 @@ namespace Test.Controllers
         {
             if (ModelState.IsValid)
             {
+                var user = await GetCurrentUserAsync();
+                person.PersonEmail = user.Email;
                 _context.Add(person);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");

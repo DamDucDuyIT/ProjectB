@@ -119,10 +119,10 @@ namespace Test.Controllers
                     //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation(3, "User created a new account with password.");
-                    Person person = new Person { PersonEmail = model.Email,Actived=false };
-                    _context.Add(person);
-                    await _context.SaveChangesAsync();
-                    return RedirectToLocal(returnUrl);
+                    //Person person = new Person { PersonEmail = model.Email,Actived=false };
+                    //_context.Add(person);
+                    //await _context.SaveChangesAsync();
+                    return RedirectToAction("Create", "Person");
                 }
                 AddErrors(result);
             }

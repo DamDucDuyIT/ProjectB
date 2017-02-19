@@ -1,0 +1,39 @@
+@model Test.Models.Answer
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+</head>
+<body>
+
+<div>
+    <h4>Answer</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.AnswerDescription)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AnswerDescription)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Vote)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Vote)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.AnswerID">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
+</body>
+</html>
