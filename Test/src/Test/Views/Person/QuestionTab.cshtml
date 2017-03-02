@@ -1,0 +1,72 @@
+﻿@model ListViewModel
+
+@{
+    ViewData["Title"] = "Question Tab";
+}
+
+
+
+
+
+<p>
+    <a asp-action="Ask">Ask a question</a>
+</p>
+<div class="container">
+
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    QuestionTitle
+                </th>
+                <th>
+                    QuestionVote
+                </th>
+                <th>
+                    Tags
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Questions)
+            {
+                <tr>
+
+                    <td>
+                        <a asp-controller="Question" asp-action="Details" asp-route-id="@item.QuestionID">@Html.DisplayFor(modelItem => item.QuestionTitle)</a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.QuestionVote)
+                    </td>
+                    <td>
+
+                        @foreach (var tag in item.Supports)
+                        {
+                            <a asp-controller="Tag" asp-action="Tagged" asp-route-tagName="@tag.Tag.TagName">@tag.Tag.TagName |</a>
+
+                        }
+
+
+                    </td>
+                    @*<td>
+                            <a asp-action="Edit" asp-route-id="@item.QuestionID">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.QuestionID">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.QuestionID">Delete</a>
+                        </td>*@
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+
+
+
+    <div page-model="@Model.PagingInfo" page-action="QuestionTab" page-classes-enabled="true"
+         page-class="btn" page-class-normal="btn-default"
+         page-class-selected="btn-primary"
+         class="btn-group pull-right">
+    </div>
+</div>

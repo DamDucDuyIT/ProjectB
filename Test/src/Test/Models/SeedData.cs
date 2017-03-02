@@ -40,9 +40,9 @@ namespace Test.Models
             context.SaveChanges();
 
 
-            Question question1 = new Question { QuestionTitle = "HashMap trong c#", QuestionDescription = "cach sử dụng HashMap trong c#?", QuestionVote = 0 };
-            Question question2 = new Question { QuestionTitle = "Sort trong Java", QuestionDescription = "làm thế nào để sort trongjava", QuestionVote = 0, Person = person2 };
-            Question question3 = new Question { QuestionTitle = "phiên bản mới nhất của .Net", QuestionDescription = "Cho mình hỏi phiên bản .net mới nhất là bao nhiêu?", QuestionVote = 0, Person = person3 };
+            Question question1 = new Question { QuestionTitle = "HashMap trong c#", QuestionDescription = "cach sử dụng HashMap trong c#?", QuestionVote = 0 ,Person=person1,  DateTime =DateTime.Now};
+            Question question2 = new Question { QuestionTitle = "Sort trong Java", QuestionDescription = "làm thế nào để sort trongjava", QuestionVote = 0, Person = person2, DateTime = DateTime.Now };
+            Question question3 = new Question { QuestionTitle = "phiên bản mới nhất của .Net", QuestionDescription = "Cho mình hỏi phiên bản .net mới nhất là bao nhiêu?", QuestionVote = 0, Person = person3, DateTime = DateTime.Now };
 
             context.Questions.AddRange(question1, question2, question3);
             context.SaveChanges();

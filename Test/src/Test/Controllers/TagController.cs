@@ -7,12 +7,14 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Test.Data;
 using Test.Models;
+using Test.Models.ViewModels;
 
 namespace Test.Controllers
 {
     public class TagController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private int pageSize = 15;
 
         public TagController(ApplicationDbContext context)
         {
@@ -20,12 +22,33 @@ namespace Test.Controllers
         }
 
         // GET: Tag
-        public async Task<IActionResult> Index(String tagName)
+        public async Task<IActionResult> Index(String searchText,String tagName, int page =1)
         {
+            ViewData["searchText"] = searchText;
             IQueryable<Tag> qryTags = _context.Tags.Include(s=>s.Supports);
 
 
-            return View(await qryTags.ToListAsync());
+            if (!String.IsNullOrEmpty(searchText))
+            {
+                qryTags = qryTags.Where(s => s.TagName.Contains(searchText));
+            }
+
+
+            IEnumerable<Tag> tagList = await qryTags.Skip((page - 1) * pageSize)
+                      .Take(pageSize).ToListAsync();
+
+            ListViewModel listViewModel = new ListViewModel
+            {
+                Tags = tagList,
+                PagingInfo = new PagingInfo
+                {
+                    CurrentPage = page,
+                    ItemsPerPage = pageSize,
+                    TotalItems = await _context.Tags.CountAsync()
+                }
+            };
+
+            return View(listViewModel);
         }
 
         public async Task<IActionResult> Tagged(String tagName)

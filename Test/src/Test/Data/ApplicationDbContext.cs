@@ -23,6 +23,7 @@ namespace Test.Data
             builder.Entity<Answer>().ToTable("Answer");
             builder.Entity<Tag>().ToTable("Tag");
             builder.Entity<Support>().ToTable("Support");
+            builder.Entity<Support2>().ToTable("Support2");
         }
         public DbSet<Person> Persons { get; set; }
         public DbSet<Question> Questions { get; set; }
@@ -30,5 +31,6 @@ namespace Test.Data
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Support> Supports { get; set; }
+        public DbSet<Support2> Support2s { get; set; }
     }
 }

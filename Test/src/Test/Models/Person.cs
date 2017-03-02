@@ -21,7 +21,7 @@ namespace Test.Models
         public String PersonAbout { get; set; }
         public String PersonEmail { get; set; }
 
-        
+        public int Score { get; set; }
         [DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime PersonBirthday { get; set; }
         public String PersonCareer { get; set; }
@@ -29,6 +29,8 @@ namespace Test.Models
 
         public ICollection<Answer> Answers { get; set; }
         public ICollection<Question> Questions { get; set; }
-        public ICollection<Tag> Tags { get; set; }
+        public ICollection<Support2
+            > Support2s { get; set; }
+       
     }
 }

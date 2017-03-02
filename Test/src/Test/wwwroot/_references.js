@@ -5,6 +5,7 @@
 /// <reference path="js/jquery.js" />
 /// <reference path="js/jquery.prettyPhoto.js" />
 /// <reference path="js/main.js" />
+/// <reference path="js/prism.js" />
 /// <reference path="js/respond.min.js" />
 /// <reference path="js/site.js" />
 /// <reference path="js/wow.min.js" />

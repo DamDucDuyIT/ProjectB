@@ -10,28 +10,70 @@ using Test.Models;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Test.Models.ViewModels;
 
 namespace Test.Controllers
 {
+
     public class QuestionController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
 
+        private int pageSize = 5;
+
         public QuestionController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
-            _userManager = userManager;  
+            _userManager = userManager;
         }
 
         // GET: Question
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchText,int page = 1, string sortOrder = "latest")
         {
-            return View(await _context.Questions
-                .Include(s=>s.Supports)
-                    .ThenInclude(t=>t.Tag)
-                .ToListAsync());
+            ViewData["SearchText"] = searchText;
+            ViewData["SortOrder"] = sortOrder;
+            IQueryable<Question> questions = _context.Questions
+                 .Include(s => s.Supports)
+                     .ThenInclude(t => t.Tag);
+                 
+
+            if (!String.IsNullOrEmpty(searchText))
+            {
+                questions = questions.Where(s => s.QuestionDescription.Contains(searchText));
+            }
+            if (sortOrder == "latest")
+            {
+                questions=questions.OrderByDescending(q=>q.DateTime);
+            }
+            else if (sortOrder =="hot")
+            {
+                questions = questions.OrderByDescending(q => q.View);
+            }
+            else if (sortOrder == "vote")
+            {
+                questions = questions.OrderByDescending(q => q.QuestionVote);
+            }
+
+            IEnumerable<Question> questionsList = await questions .Skip((page - 1) * pageSize)
+                      .Take(pageSize).ToListAsync();
             
+
+            ListViewModel listViewModel = new ListViewModel
+            {
+                Questions = questionsList,
+                PagingInfo = new PagingInfo
+                {
+                    CurrentPage = page,
+                    ItemsPerPage = pageSize,
+                    TotalItems = await _context.Questions
+                 .Include(s => s.Supports)
+                     .ThenInclude(t => t.Tag).CountAsync()
+                }
+            };
+    
+             
+            return View(listViewModel);
 
         }
 
@@ -50,6 +92,8 @@ namespace Test.Controllers
                 .Include(s => s.Supports)
                     .ThenInclude(t => t.Tag)
                     .SingleOrDefaultAsync(m => m.QuestionID == id);
+            question.View++;
+            await _context.SaveChangesAsync();
             if (question == null)
             {
                 return NotFound();
@@ -80,11 +124,14 @@ namespace Test.Controllers
                 question.Comments = new List<Comment>();
                 question.Supports = new List<Support>();
                 question.QuestionVote = 0;
-
-
+                question.AnswerCount = 0;
+                question.View = 0;
+                question.DateTime = DateTime.Now;
                 var user = await GetCurrentUserAsync();
                 var userEmail = user.Email;
-                var person = _context.Persons.FirstOrDefault(m => m.PersonEmail == userEmail);
+                var person = _context.Persons
+                            .Include(s=>s.Support2s)
+                    .FirstOrDefault(m => m.PersonEmail == userEmail);
                 question.Person = person;
                 _context.Add(question);
                
@@ -107,12 +154,22 @@ namespace Test.Controllers
                     }
                 }
                 await _context.SaveChangesAsync();
+
+                //foreach (var item in question.Supports)
+                //{
+
+                //    person.Tags.Add(item.Tag);
+
+                //}
+                await _context.SaveChangesAsync();
+
                 return RedirectToAction("Index");
             }
             return View(question);
         }
 
         // GET: Question/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -162,7 +219,7 @@ namespace Test.Controllers
             }
             return View(question);
         }
-
+        [Authorize]
         public async Task<IActionResult> Vote(int? id)
         {
             if (id == null)
@@ -177,20 +234,35 @@ namespace Test.Controllers
             
             return RedirectToAction("Details",new { id = id });
         }
-
+        [Authorize]
         public async Task<IActionResult> TakeAnswer(int? id,string answerText)
         {
             ViewData["answerText"] = answerText;
+
             if (id == null)
             {
                 return NotFound();
             }
 
-            var question = await _context.Questions.SingleOrDefaultAsync(m => m.QuestionID == id);
+            var question = await _context.Questions
+                            .Include(s=>s.Supports)
+                                
+                .SingleOrDefaultAsync(m => m.QuestionID == id);
 
             var user = await GetCurrentUserAsync();
             var userEmail = user.Email;
-            var person = _context.Persons.FirstOrDefault(m => m.PersonEmail == userEmail);
+            var person = _context.Persons
+                    .Include(s=>s.Support2s)
+                .FirstOrDefault(m => m.PersonEmail == userEmail);
+
+            //foreach(var item in question.Supports)
+            //{
+               
+            //   person.Tags.Add(_context.Tags.FirstOrDefault(t=>t.TagID== item.TagID));
+                              
+            //}
+            await _context.SaveChangesAsync();
+
 
             Answer answer = new Answer();
             answer.AnswerDescription = answerText;
@@ -201,6 +273,7 @@ namespace Test.Controllers
             await _context.SaveChangesAsync();
 
             question.Answers.Add(answer);
+            question.AnswerCount++;
             _context.Update(question);
             await _context.SaveChangesAsync();
 
@@ -208,6 +281,7 @@ namespace Test.Controllers
         }
 
         // GET: Question/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)

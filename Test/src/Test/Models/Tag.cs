@@ -12,5 +12,7 @@ namespace Test.Models
         public String TagName { get; set; }
 
         public ICollection <Support> Supports { get; set; }
+        public ICollection<Support2> Support2s { get; set; }
+
     }
 }

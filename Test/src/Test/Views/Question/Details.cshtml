@@ -24,7 +24,12 @@
             <div class="row">
                 <h2 style="color:blue">Ask By:</h2>
             </div>
-            <div>@Html.DisplayFor(model => Model.Person.PersonDisplayName)</div>
+            <div>
+                <a asp-controller="Person" asp-action="Profile" asp-route-PersonID="@Model.Person.PersonID">
+                    @Html.DisplayFor(model => Model.Person.PersonDisplayName)
+                </a>
+                
+            </div>
         </div>
 
 
@@ -32,12 +37,38 @@
             <form asp-action="Vote">
                 <a class="fa fa-thumbs-o-up" asp-action="Vote" asp-route-id="@Model.QuestionID"></a>
                 <span style="margin-right:4em">@Html.DisplayFor(model => Model.QuestionVote)</span>
-
-
             </form>
             <button class="btn-success btn-lg" href="#giveAnswer" data-toggle="collapse">
                 Câu trả lời của bạn
             </button>
+
+        </div>
+        <div id="giveAnswer" class="panel-body panel-collapse collapse">
+            <hr />
+            <h2>Câu trả lời của bạn</h2>
+
+            <form asp-action="TakeAnswer" method="get">
+
+
+
+                <div class="form-actions no-color">
+                    <p>
+                        <textarea type="text" id="answerText" name="answerText"></textarea>
+                        @*<input  type="submit" value="Post Your Answer" class="btn btn-success" />*@
+                        <input type="hidden" name="id" value=@Model.QuestionID>
+
+                        <button type="submit" class="btn btn-success">
+                            Post Your Answer
+                        </button>
+
+
+
+                    </p>
+                </div>
+
+
+            </form>
+
 
         </div>
 
@@ -62,45 +93,21 @@
                             <h2 style="color:forestgreen">Answer By:</h2>
                         </div>
                         <div class="col-lg-offset-10">
-                            @item.Person.PersonDisplayName
+                            <a asp-controller="Person" asp-action="Profile" asp-route-PersonID="@item.Person.PersonID">
+                                @item.Person.PersonDisplayName
+                            </a>
+                           
                         </div>
                     </div>
                     <hr />
             }
         </div>
 
-        <div id="giveAnswer" class="panel-body panel-collapse collapse">
-            <hr />
-            <h2>Câu trả lời của bạn</h2>
-
-            <form asp-action="TakeAnswer" method="get">
-
-
-
-                <div class="form-actions no-color">
-                    <p>
-                        <textarea type="text" id="answerText" name="answerText"></textarea>
-                        @*<input  type="submit" value="Post Your Answer" class="btn btn-success" />*@
-                        <input type="hidden" name="id" value=@Model.QuestionID> 
-                            
-                                <button type="submit" class="btn btn-success">
-                                    Post Your Answer
-                                    </button>
-                            
-                      
-
-                    </p>
-                </div>
-
-
-            </form>
-
-
-        </div>
+        
 
 
     </div>
 
-    <a asp-action="Edit" asp-route-id="@Model.QuestionID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    @*<a asp-action="Edit" asp-route-id="@Model.QuestionID">Edit</a> |
+    <a asp-action="Index">Back to List</a>*@
 </div>

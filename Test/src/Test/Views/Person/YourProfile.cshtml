@@ -4,19 +4,19 @@
 
 
 
-    @*<div>
+@*<div>
         <h4>Person</h4>
         <hr />
         <dl class="dl-horizontal">
-          
-           
+
+
             <dt>
                 @Html.DisplayNameFor(model => model.PersonDisplayName)
             </dt>
             <dd>
                 @Html.DisplayFor(model => model.PersonDisplayName)
             </dd>
-         
+
             <dt>
                 @Html.DisplayNameFor(model => model.PersonFirstName)
             </dt>
@@ -61,6 +61,18 @@
         <a asp-action="Edit" asp-route-id="@Model.PersonID">Edit</a> |
         <a asp-action="Index">Back to List</a>
     </div>*@
+
+<div class="row col-lg-offset-8">
+    <ul class="nav navbar-nav">
+       
+        <li><a asp-controller="Person" asp-action="YourProfile">YourProfile</a></li>
+        <li><a asp-controller="Person" asp-action="Activity">Activity</a></li>
+    </ul>
+
+</div>
+<hr />
+
+
 <div class="container">
     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad">
 
@@ -112,10 +124,9 @@
             <div class="panel-footer">
 
                 <span class="pull-right">
-                    @if (ViewData["UserEmailConfirm"].Equals("yes"))
-                    {
-                        <a asp-action="Edit" asp-route-id="@Model.PersonID" data-original-title="Edit this user" data-toggle="tooltip" type="button" class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-edit"></i></a>
-                    }
+                 
+                     <a asp-action="Edit" asp-route-id="@Model.PersonID" data-original-title="Edit this user" data-toggle="tooltip" type="button" class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-edit"></i></a>
+                    
                     <a asp-action="Index" data-original-title="Back to List" data-toggle="tooltip" type="button" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-backward"></i></a>
                 </span>
             </div>

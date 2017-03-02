@@ -13,9 +13,13 @@ namespace Test.Models
 
         public int QuestionVote { get; set; }
 
+        public int AnswerCount { get; set; }
 
         public Person Person { get; set; }
 
+        public DateTime DateTime { get; set; }
+
+        public int View { get; set; }
 
         public ICollection<Answer> Answers { get; set; }
 
