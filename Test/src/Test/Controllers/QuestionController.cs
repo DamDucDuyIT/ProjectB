@@ -132,24 +132,26 @@ namespace Test.Controllers
                 var person = _context.Persons
                             .Include(s=>s.Support2s)
                     .FirstOrDefault(m => m.PersonEmail == userEmail);
+                person.Score += 3;
+                _context.Update(person);
                 question.Person = person;
                 _context.Add(question);
                
-                List<String> selectedTagHS = Regex.Split(selectedTags, @"\W+").ToList();
+                List<String> selectedTagHS = Regex.Split(selectedTags, @"\s+").ToList();
 
 
                 foreach (var tag in selectedTagHS)
                 {
-                    if (_context.Tags.Any(t => t.TagName == tag))
+                    if (_context.Tags.Any(t => t.TagName == tag.ToLower()))
                     {
-                        question.Supports.Add(new Support { TagID = _context.Tags.FirstOrDefault(t=>t.TagName==tag).TagID, QuestionID = question.QuestionID });
+                        question.Supports.Add(new Support { TagID = _context.Tags.FirstOrDefault(t=>t.TagName==tag.ToLower()).TagID, QuestionID = question.QuestionID });
                         await _context.SaveChangesAsync();
                     }
                     else
                     {
-                        _context.Tags.Add(new Tag { TagName=tag});
+                        _context.Tags.Add(new Tag { TagName=tag.ToLower()});
                         await _context.SaveChangesAsync();
-                        question.Supports.Add(new Support { TagID = _context.Tags.FirstOrDefault(t => t.TagName == tag).TagID, QuestionID = question.QuestionID });
+                        question.Supports.Add(new Support { TagID = _context.Tags.FirstOrDefault(t => t.TagName == tag.ToLower()).TagID, QuestionID = question.QuestionID });
                         await _context.SaveChangesAsync();
                     }
                 }
@@ -227,11 +229,18 @@ namespace Test.Controllers
                 return NotFound();
             }
 
-            var question = await _context.Questions.SingleOrDefaultAsync(m => m.QuestionID == id);
+            var question = await _context.Questions.Include(p=>p.Person).SingleOrDefaultAsync(m => m.QuestionID == id);
+            int personId = question.Person.PersonID;
             question.QuestionVote++;
             _context.Update(question);
+
             await _context.SaveChangesAsync();
             
+            var person = await _context.Persons.SingleOrDefaultAsync(p => p.PersonID == personId);
+            person.Score += 5;
+            _context.Update(person);
+
+            await _context.SaveChangesAsync();
             return RedirectToAction("Details",new { id = id });
         }
         [Authorize]
@@ -254,6 +263,9 @@ namespace Test.Controllers
             var person = _context.Persons
                     .Include(s=>s.Support2s)
                 .FirstOrDefault(m => m.PersonEmail == userEmail);
+            person.Score += 3;
+            _context.Update(person);
+
 
             //foreach(var item in question.Supports)
             //{

@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Test.Data;
 using Test.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Test.Controllers
 {
+    [Authorize]
     public class AnswerController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -126,9 +128,16 @@ namespace Test.Controllers
                 return NotFound();
             }
 
-            var answer = await _context.Answers.Include(q => q.Question).SingleOrDefaultAsync(m => m.AnswerID == id);
+            var answer = await _context.Answers.Include(q => q.Question).Include(p=>p.Person).SingleOrDefaultAsync(m => m.AnswerID == id);
             answer.Vote++;
             _context.Update(answer);
+
+            await _context.SaveChangesAsync();
+
+            var person = _context.Persons.FirstOrDefault(p => p.PersonID == answer.Person.PersonID);
+            person.Score += 10;
+            _context.Update(person);
+
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Details","Question", new { id = answer.Question.QuestionID });

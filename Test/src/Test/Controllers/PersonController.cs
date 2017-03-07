@@ -33,7 +33,7 @@ namespace Test.Controllers
 
         // GET: Person
         [AllowAnonymous]
-        public async Task<IActionResult> Index(string searchText,int page = 1)
+        public async Task<IActionResult> Index(string searchText,int page = 1, string sortOrder = "score",string sortTag="")
         {
             IQueryable<Person> persons = _context.Persons
                     .Include(s=>s.Support2s)
@@ -42,11 +42,21 @@ namespace Test.Controllers
                     .Include(a=>a.Answers)
                 .Where(p => p.Actived == true);
 
+            if (sortTag != "")
+            {
+                persons = persons.Where(p => p.Support2s.Any(s => s.Tag.TagName == sortTag));
+            }
+            
 
             if (!String.IsNullOrEmpty(searchText))
             {
                 persons = persons.Where(s => s.PersonDisplayName.Contains(searchText)
                 || s.PersonFirstName.Contains(searchText) || s.PersonLastName.Contains(searchText));
+            }
+
+            if (sortOrder == "score")
+            {
+                persons = persons.OrderByDescending(p => p.Score);
             }
 
 
@@ -86,8 +96,11 @@ namespace Test.Controllers
             
             //var user = await GetCurrentUserAsync();
             //var userEmail = user.Email;
-            var person =  _context.Persons.FirstOrDefault(m => m.PersonID == PersonID);
-            if (userEmail!=null && person.PersonEmail.Equals(userEmail))
+            var person =  _context.Persons
+                .Include(s=>s.Support2s)
+                    .ThenInclude(t=>t.Tag)
+                .FirstOrDefault(m => m.PersonID == PersonID);
+            if (userEmail!=null &&  person.PersonEmail.Equals(userEmail))
             {
                 ViewData["UserEmailConfirm"] = "yes";
             }
@@ -107,7 +120,7 @@ namespace Test.Controllers
 
             var user = await GetCurrentUserAsync();
             var userEmail = user.Email;
-            var person = _context.Persons.FirstOrDefault(m => m.PersonEmail==userEmail);
+            var person = _context.Persons.Include(s=>s.Support2s).ThenInclude(t=>t.Tag).FirstOrDefault(m => m.PersonEmail==userEmail);
          
 
             return View(person);
@@ -233,21 +246,21 @@ namespace Test.Controllers
                 person.Actived = true;
                 
 
-                List<String> selectedTagHS = Regex.Split(selectedTags, @"\W+").ToList();
+                List<String> selectedTagHS = Regex.Split(selectedTags, @"\s+").ToList();
 
 
                 foreach (var tag in selectedTagHS)
                 {
-                    if (_context.Tags.Any(t => t.TagName == tag))
+                    if (_context.Tags.Any(t => t.TagName == tag.ToLower()))
                     {
-                        person.Support2s.Add(new Support2 { TagID = _context.Tags.FirstOrDefault(t => t.TagName == tag).TagID, PersonID = person.PersonID});
+                        person.Support2s.Add(new Support2 { TagID = _context.Tags.FirstOrDefault(t => t.TagName == tag.ToLower()).TagID, PersonID = person.PersonID});
                         await _context.SaveChangesAsync();
                     }
                     else
                     {
-                        _context.Tags.Add(new Tag { TagName = tag });
+                        _context.Tags.Add(new Tag { TagName = tag.ToLower() });
                         await _context.SaveChangesAsync();
-                        person.Support2s.Add(new Support2 { TagID = _context.Tags.FirstOrDefault(t => t.TagName == tag).TagID, PersonID = person.PersonID });
+                        person.Support2s.Add(new Support2 { TagID = _context.Tags.FirstOrDefault(t => t.TagName == tag.ToLower()).TagID, PersonID = person.PersonID });
                         await _context.SaveChangesAsync();
 
                     }
@@ -270,11 +283,21 @@ namespace Test.Controllers
                 return NotFound();
             }
 
-            var person = await _context.Persons.SingleOrDefaultAsync(m => m.PersonID == id);
+            var person = await _context.Persons
+                .Include(s=>s.Support2s)
+                    .ThenInclude(t=>t.Tag)
+                .SingleOrDefaultAsync(m => m.PersonID == id);
+           
             if (person == null)
             {
                 return NotFound();
             }
+            string tamp = "";
+            foreach (var item in person.Support2s)
+            {
+                tamp += item.Tag.TagName + " ";
+            }
+            ViewData["tag"] = tamp;
             return View(person);
         }
 
@@ -283,7 +306,7 @@ namespace Test.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PersonID,PersonAbout,PersonBirthday,PersonCareer,PersonDisplayName,PersonEmail,PersonFirstName,PersonLastName,PersonLocation")] Person person)
+        public async Task<IActionResult> Edit(int id, [Bind("Actived,Score,PersonEmail,PersonID,PersonAbout,PersonBirthday,PersonCareer,PersonDisplayName,PersonEmail,PersonFirstName,PersonLastName,PersonLocation")] Person person,string tag="")
         {
             if (id != person.PersonID)
             {
@@ -294,7 +317,46 @@ namespace Test.Controllers
             {
                 try
                 {
+
+
+                    
                     _context.Update(person);
+                    IQueryable<Support2> support2 = _context.Support2s
+                                                    .Include(p=>p.Person)
+                                                    .Include(t=>t.Tag)
+                                                    .Where(s => s.PersonID == person.PersonID);
+                    foreach(var item in support2)
+                    {
+                        _context.Remove(item);
+                      
+                    }
+                    await _context.SaveChangesAsync();
+
+                    List<String> selectedTagHS = Regex.Split(tag, @"\s+").ToList();
+                    foreach (var item in selectedTagHS)
+                    {
+                        if (item == "")
+                        {
+                            continue;
+                        }
+                        if (_context.Tags.Any(t => t.TagName == item.ToLower()))
+                        {
+                            person.Support2s.Add(new Support2 { TagID = _context.Tags.FirstOrDefault(t => t.TagName == item.ToLower()).TagID, PersonID = person.PersonID });
+                            await _context.SaveChangesAsync();
+                        }
+                        else
+                        {
+                            _context.Tags.Add(new Tag { TagName = item.ToLower() });
+                            await _context.SaveChangesAsync();
+                            person.Support2s.Add(new Support2 { TagID = _context.Tags.FirstOrDefault(t => t.TagName == item.ToLower()).TagID, PersonID = person.PersonID });
+                            await _context.SaveChangesAsync();
+
+                        }
+                    }
+
+
+
+
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

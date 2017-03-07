@@ -97,9 +97,11 @@
     <div class="form-actions no-color">
         <p>
             Find by name: <input type="text" name="searchText" value="@ViewData["searchText"]" />
-            <input type="submit" value="Search" class="btn btn-default" /> |
-            <a asp-action="Index" asp-route-page="1">Back to List</a>
+            Find by tag: <input type="text" name="sortTag" value="@ViewData["sortTag"]" />
+            &nbsp; &nbsp; <input type="submit" value="Search" class="btn btn-primary" style="height:55px"/> 
+         
         </p>
+      
     </div>
 </form>
 <div class="container">

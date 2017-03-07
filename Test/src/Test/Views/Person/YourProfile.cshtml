@@ -97,6 +97,10 @@
                                     <td>@Model.PersonLastName</td>
                                 </tr>
                                 <tr>
+                                    <td>Score:</td>
+                                    <td>@Model.Score</td>
+                                </tr>
+                                <tr>
                                     <td>Date of Birth:</td>
                                     <td>@Html.DisplayFor(model => model.PersonBirthday)</td>
                                 </tr>
@@ -109,6 +113,16 @@
                                 <tr>
                                     <td>Career:</td>
                                     <td>@Model.PersonCareer</td>
+                                </tr>
+                                <tr>
+                                    <td>Tag:</td>
+                                    <td>
+                                        @foreach (var tag in Model.Support2s)
+                                        {
+                                            <a asp-controller="Tag" asp-action="Tagged" asp-route-tagName="@tag.Tag.TagName">@tag.Tag.TagName &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;</a>
+
+                                        }
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>About:</td>
