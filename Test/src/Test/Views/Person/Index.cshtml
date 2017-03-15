@@ -87,7 +87,7 @@
 @model ListViewModel
 
 @{
-    ViewData["Title"] = "User";
+    ViewData["Title"] = "Người dùng";
 }
 
 
@@ -96,9 +96,9 @@
 <form asp-action="Index" method="get">
     <div class="form-actions no-color">
         <p>
-            Find by name: <input type="text" name="searchText" value="@ViewData["searchText"]" />
-            Find by tag: <input type="text" name="sortTag" value="@ViewData["sortTag"]" />
-            &nbsp; &nbsp; <input type="submit" value="Search" class="btn btn-primary" style="height:55px"/> 
+            Tìm theo tên: <input type="text" name="searchText" value="@ViewData["searchText"]" />
+            Tìm theo tag: <input type="text" name="sortTag" value="@ViewData["sortTag"]" />
+            &nbsp; &nbsp; <input type="submit" value="Tìm kiếm" class="btn btn-primary" style="height:55px"/> 
          
         </p>
       
@@ -109,14 +109,19 @@
     @foreach (var item in Model.Persons)
     {
         <div class="col-md-4">
+           
             <div class="panel panel-success">
                 <div class="panel-heading">
                     <a class="post-tag" asp-controller="Person" asp-action="Profile" asp-route-PersonID="@item.PersonID"><h2>@item.PersonDisplayName</h2></a>
+                    
                 </div>
                 <div class="panel-body" style="background-color:white">
-                    <div class="user-info">
-                        <span><strong>Career:</strong> @item.PersonCareer</span><br />
-                        <span><strong>Locarion:</strong> @item.PersonLocation</span><br />
+                    <div class="col-lg-3">
+                        <img alt="avatar" src='~/avatars/@item.PersonAvatar' class="img-circle img-responsive">
+                    </div>
+                    <div class="user-info col-lg-9">
+                        <span><strong>Nghề nghiệp:</strong> @item.PersonCareer</span><br />
+                        <span><strong>Địa chỉ:</strong> @item.PersonLocation</span><br />
                         <span><strong>Score:</strong> @item.Score</span>
                     </div>
                    

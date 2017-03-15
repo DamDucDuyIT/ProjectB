@@ -5,7 +5,7 @@
 
 <h2>@ViewData["Title"].</h2>
 
-<form asp-controller="Account" asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+@*<form asp-controller="Account" asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
     <h4>Create a new account.</h4>
     <hr />
     <div asp-validation-summary="All" class="text-danger"></div>
@@ -35,7 +35,35 @@
             <button type="submit" class="btn btn-default">Register</button>
         </div>
     </div>
-</form>
+</form>*@
+
+
+
+<div class="container">
+    <div class="col-lg-offset-3 col-lg-5">
+        <div class="modal-header">
+
+            <h3>Đăng ký tài khoản để kết nối với ASKREM</h3>
+        </div>
+        <div class="modal-body">
+            <form method="post" asp-controller="Account" asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <p><input asp-for="Email" class="form-control" placeholder="Email" /></p>
+                <span asp-validation-for="Email" class="text-danger"></span>
+                <p><input asp-for="Password" class="form-control" placeholder="Mật khẩu" /></p>
+                <p><input asp-for="ConfirmPassword" class="form-control" placeholder="Xác nhận mật khẩu" /></p>
+                <p>
+                    <button type="submit" class="btn btn-primary">Register</button>
+                  
+                </p>
+            </form>
+        </div>
+        
+    </div>
+</div>
+
+
+
 <h2>Chú ý, sau khi đăng ký thành công, vui lòng vào User -> Profile cập nhật thông tin để sử dụng những tính năng cơ bản</h2>
 
 @section Scripts {

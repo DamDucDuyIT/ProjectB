@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -26,6 +27,13 @@ namespace Test.Models
         public DateTime PersonBirthday { get; set; }
         public String PersonCareer { get; set; }
         public bool Actived { get; set; }
+
+        //[DataType(DataType.Upload)]
+        //[Display(Name = "Upload Avatar")]
+        //[FileExtensions(Extensions = "jpg,jpeg,png,pdf")]
+        //public IFormFile Image { get; set; }
+
+       public String PersonAvatar { get; set; }
 
         public ICollection<Answer> Answers { get; set; }
         public ICollection<Question> Questions { get; set; }

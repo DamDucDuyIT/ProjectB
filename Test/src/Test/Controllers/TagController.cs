@@ -51,14 +51,25 @@ namespace Test.Controllers
             return View(listViewModel);
         }
 
-        public async Task<IActionResult> Tagged(String tagName)
+        public async Task<IActionResult> Tagged(String tagName, string sortOrder = "latest")
         {
             IQueryable<Support> qryTags = _context.Supports.Include(t => t.Tag)
 
                 .Include(q => q.Question).ThenInclude(s => s.Supports).ThenInclude(a => a.Tag);
 
             qryTags = qryTags.Where(t => t.Tag.TagName == tagName);
-
+            if (sortOrder == "latest")
+            {
+                qryTags = qryTags.OrderByDescending(q => q.Question.DateTime);
+            }
+            else if (sortOrder == "hot")
+            {
+                qryTags = qryTags.OrderByDescending(q => q.Question.View);
+            }
+            else if (sortOrder == "vote")
+            {
+                qryTags = qryTags.OrderByDescending(q => q.Question.QuestionVote);
+            }
 
             return View(await qryTags.ToListAsync());
         }

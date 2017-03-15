@@ -6,21 +6,23 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-    <form asp-area="" asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm" class="navbar-right">
-        <ul class="nav navbar-nav navbar-right">
-            <li>
-                <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
-            </li>
-            <li>
-                <button type="submit" class="btn btn-link navbar-btn navbar-link">Log off</button>
-            </li>
-        </ul>
+    <form asp-area="" asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm" class="row">
+       
+                <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage" class="col-lg-8">@UserManager.GetUserName(User)!</a>
+           
+            
+                <button type="submit" class="btn btn-info btn-rounded col-lg-4">Đăng xuất</button>
+       
     </form>
 }
 else
 {
-    <ul class="nav navbar-nav navbar-right">
-        <li><a asp-area="" asp-controller="Account" asp-action="Register">Register</a></li>
-        <li><a asp-area="" asp-controller="Account" asp-action="Login">Log in</a></li>
-    </ul>
+    <div class="row">
+        <a asp-area="" asp-controller="Account" asp-action="Register" class="btn btn-info btn-rounded col-lg-4 col-lg-offset-3">Đăng ký</a>
+        <a asp-area="" asp-controller="Account" asp-action="Login" class="btn btn-info btn-rounded col-lg-4 col-lg-offset-1">Đăng nhập</a>
+        @*<a data-toggle="modal" href="#myModal" class="btn btn-success btn-rounded col-lg-4 col-lg-offset-1">Log in</a>*@
+    
+        
+    
+    </div> 
 }

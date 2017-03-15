@@ -1,13 +1,13 @@
 ﻿@model Test.Models.Question
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Nội dung";
 }
 
 
 
 <div>
-    <h4>Question</h4>
+    <h4>Câu hỏi</h4>
     <hr />
     <div class="container">
         <h1 style="color:black">@Html.DisplayFor(model => Model.QuestionTitle)</h1>
@@ -22,7 +22,7 @@
         </div>
         <div class="row col-lg-offset-10">
             <div class="row">
-                <h2 style="color:blue">Ask By:</h2>
+                <h2 style="color:blue">Người đặt câu hỏi:</h2>
             </div>
             <div>
                 <a asp-controller="Person" asp-action="Profile" asp-route-PersonID="@Model.Person.PersonID">
@@ -73,7 +73,7 @@
         </div>
 
 
-        <div class="row">@Html.DisplayFor(model => Model.Answers.Count) Answers</div>
+        <div class="row">@Html.DisplayFor(model => Model.Answers.Count) câu trả lời</div>
         <hr />
         <div id="answers">
             @foreach (var item in Model.Answers)
@@ -90,7 +90,7 @@
                         </form>
 
                         <div class="col-lg-offset-10">
-                            <h2 style="color:forestgreen">Answer By:</h2>
+                            <h2 style="color:forestgreen">Được trả lời bởi:</h2>
                         </div>
                         <div class="col-lg-offset-10">
                             <a asp-controller="Person" asp-action="Profile" asp-route-PersonID="@item.Person.PersonID">

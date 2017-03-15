@@ -1,7 +1,7 @@
 ﻿@model ListViewModel
 
 @{
-    ViewData["Title"] = "Question Tab";
+    ViewData["Title"] = "Danh sách câu hỏi";
 }
 
 
@@ -9,7 +9,7 @@
 
 
 <p>
-    <a asp-action="Ask">Ask a question</a>
+    <a asp-action="Ask" asp-controller="Question">Đặt câu hỏi</a>
 </p>
 <div class="container">
 
@@ -18,10 +18,10 @@
         <thead>
             <tr>
                 <th>
-                    QuestionTitle
+                    Tiêu đề
                 </th>
                 <th>
-                    QuestionVote
+                    Vote
                 </th>
                 <th>
                     Tags

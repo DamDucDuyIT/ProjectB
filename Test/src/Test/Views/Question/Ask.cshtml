@@ -1,51 +1,57 @@
 @model Test.Models.Question
 
 @{
-    ViewData["Title"] = "Ask";
+    ViewData["Title"] = "Đặt câu hỏi";
+    Layout = "_Layout";
 }
 
-<h2>Ask Question</h2>
+<div class="container">
+    <h2>Đặt câu hỏi</h2>
+    <div class="container">
+        <form asp-action="Ask">
+            <div class="form-horizontal col-lg-offset-1 col-lg-11">
 
-<form asp-action="Ask">
-    <div class="form-horizontal">
-        <h4>Question</h4>
-        <hr />
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <hr />
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-        <div class="form-group">
-            <label asp-for="QuestionTitle" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="QuestionTitle" class="form-control" />
-                <span asp-validation-for="QuestionTitle" class="text-danger" ></span>
-            </div>
-        </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">Tiêu đề</label>
+                    <div class="col-md-10">
+                        <input asp-for="QuestionTitle" class="form-control" />
+                        <span asp-validation-for="QuestionTitle" class="text-danger"></span>
+                    </div>
+                </div>
 
-        <div class="form-group">
-            <label asp-for="QuestionDescription" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <textarea asp-for="QuestionDescription" class="form-control"></textarea>
-                <span asp-validation-for="QuestionDescription" class="text-danger"></span>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">Nội dung</label>
+                    <div class="col-md-10">
+                        <textarea asp-for="QuestionDescription" class="form-control"></textarea>
+                        <span asp-validation-for="QuestionDescription" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-2 control-label">Tags</label>
+                    <div class="col-md-10">
+                        <input name="selectedTags" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Đăng" class="btn btn-default" />
+                    </div>
+                </div>
             </div>
-        </div>
-      
-        <div class="form-group">
-            <label class="col-md-2 control-label">Tags</label>
-            <div class="col-md-10">
-                <input name="selectedTags"/>
-            </div>
-        </div>
-        
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Submit Question" class="btn btn-default"/>
-            </div>
+        </form>
+
+        <div>
+            <a asp-action="Index">Quay lại danh sách</a>
         </div>
     </div>
-</form>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
+
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

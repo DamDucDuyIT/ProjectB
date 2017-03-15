@@ -1,12 +1,14 @@
 ﻿@model ListViewModel
-
+@{
+    ViewData["Title"] = "Tag";
+}
 
 <form asp-controller="Tag" asp-action="Index" method="get">
     <div class="form-actions no-color">
         <p>
-            Find by name: <input type="text" name="searchText" value="@ViewData["searchText"]" />
-            <input type="submit" value="Search" class="btn btn-default" /> |
-            <a asp-action="Index" asp-route-page="1">Back to List</a>
+            Tìm kiếm: <input type="text" name="searchText" value="@ViewData["searchText"]" />
+            <input type="submit" value="Tìm" class="btn btn-default" /> |
+            <a asp-action="Index" asp-route-page="1">Quay lại danh sách</a>
         </p>
     </div>
 </form>

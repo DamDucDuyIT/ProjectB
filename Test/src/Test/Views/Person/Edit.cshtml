@@ -4,7 +4,7 @@
 
 
 
-<form asp-action="Edit">
+<form asp-action="Edit" method="post"  enctype="multipart/form-data">
     <div class="form-horizontal">
         <h4>Person</h4>
         <hr />
@@ -82,6 +82,13 @@
         </div>
 
         <div class="form-group">
+            <label class="col-md-2 control-label">Upload Avatar</label>
+            <div class="col-md-10">
+                <input type="file" name="file" multiple />
+            </div>
+        </div>
+
+        <div class="form-group">
             <label class="col-md-2 control-label">Tags</label>
             <div class="col-md-10">
      
@@ -91,6 +98,7 @@
         <input class="hidden" asp-for="PersonEmail"/>
         <input class="hidden" asp-for="Score" />
         <input class="hidden" asp-for="Actived" />
+        <input class="hidden" asp-for="PersonAvatar" />
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Save" class="btn btn-default" />

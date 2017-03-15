@@ -1,7 +1,7 @@
 @model Test.Models.Person
 
 
-<form asp-action="Create">
+<form asp-action="Create" method="post"  enctype="multipart/form-data">
     <div class="form-horizontal">
         <h4>Person</h4>
         <hr />
@@ -70,6 +70,18 @@
             <div class="col-md-10">
                 <textarea asp-for="PersonAbout" class="form-control"></textarea>
                 <span asp-validation-for="PersonAbout" class="text-danger" />
+            </div>
+        </div>
+
+        @*<form method="post" asp-action="Index" asp-controller="Home" enctype="multipart/form-data">
+            <input type="file" name="files" multiple />
+            <input type="submit" value="Upload" />
+        </form>*@
+
+        <div class="form-group">
+            <label class="col-md-2 control-label">Upload Avatar</label>
+            <div class="col-md-10">
+                <input type="file" name="file" multiple />
             </div>
         </div>
 

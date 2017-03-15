@@ -12,6 +12,9 @@ using System.Collections;
 using Microsoft.AspNetCore.Authorization;
 using Test.Models.ViewModels;
 using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
+using Microsoft.AspNetCore.Http;
 
 namespace Test.Controllers
 {
@@ -21,13 +24,15 @@ namespace Test.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private IHostingEnvironment _environment;
         private int pageSize = 15;
 
-        public PersonController(SignInManager<ApplicationUser> signInManager, ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public PersonController(SignInManager<ApplicationUser> signInManager, ApplicationDbContext context, UserManager<ApplicationUser> userManager, IHostingEnvironment environment)
         {
             _context = context;
             _userManager = userManager;
             _signInManager = signInManager;
+            _environment = environment;
 
         }
 
@@ -234,7 +239,7 @@ namespace Test.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PersonID,PersonAbout,PersonBirthday,PersonCareer,PersonDisplayName,PersonEmail,PersonFirstName,PersonLastName,PersonLocation")] Person person, string selectedTags)
+        public async Task<IActionResult> Create([Bind("PersonID,PersonAbout,PersonBirthday,PersonCareer,PersonDisplayName,PersonEmail,PersonFirstName,PersonLastName,PersonLocation")] Person person, string selectedTags, IFormFile file)
         {
             if (ModelState.IsValid)
             {
@@ -244,8 +249,8 @@ namespace Test.Controllers
              
                 person.Score = 0;
                 person.Actived = true;
-                
 
+  
                 List<String> selectedTagHS = Regex.Split(selectedTags, @"\s+").ToList();
 
 
@@ -267,8 +272,17 @@ namespace Test.Controllers
                 }
 
                 _context.Persons.Add(person);
-                
+
                 await _context.SaveChangesAsync();
+                person.PersonAvatar = person.PersonID + ".png";
+                await _context.SaveChangesAsync();
+
+                var uploads = Path.Combine(_environment.WebRootPath, "avatars");
+
+                using (var fileStream = new FileStream(Path.Combine(uploads, person.PersonID.ToString() + ".png"), FileMode.Create))
+                {
+                    await file.CopyToAsync(fileStream);
+                }
 
                 return RedirectToAction("Index","Home");
             }
@@ -306,7 +320,7 @@ namespace Test.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Actived,Score,PersonEmail,PersonID,PersonAbout,PersonBirthday,PersonCareer,PersonDisplayName,PersonEmail,PersonFirstName,PersonLastName,PersonLocation")] Person person,string tag="")
+        public async Task<IActionResult> Edit(int id, [Bind("Actived,Score,PersonEmail,PersonID,PersonAbout,PersonBirthday,PersonCareer,PersonDisplayName,PersonEmail,PersonFirstName,PersonLastName,PersonLocation,PersonAvatar")] Person person, IFormFile file, string tag="")
         {
             if (id != person.PersonID)
             {
@@ -353,11 +367,14 @@ namespace Test.Controllers
 
                         }
                     }
-
-
-
-
                     await _context.SaveChangesAsync();
+                    var uploads = Path.Combine(_environment.WebRootPath, "avatars");
+
+                    using (var fileStream = new FileStream(Path.Combine(uploads, person.PersonID.ToString() + ".png"), FileMode.Create))
+                    {
+                        await file.CopyToAsync(fileStream);
+                    }
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -370,7 +387,7 @@ namespace Test.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("Index");
+                return RedirectToAction("YourProfile");
             }
             return View(person);
         }

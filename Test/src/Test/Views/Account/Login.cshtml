@@ -8,8 +8,8 @@
     ViewData["Title"] = "Log in";
 }
 
-<h2>@ViewData["Title"].</h2>
-<div class="row">
+@*<h2>@ViewData["Title"].</h2>*@
+@*<div class="row">
     <div class="col-md-8">
         <section>
             <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
@@ -85,7 +85,34 @@
             }
         </section>
     </div>
+</div>*@
+
+
+<div class="container">
+    <div class="col-lg-offset-3 col-lg-5">
+        <div class="modal-header">
+           
+            <h3>Đăng nhập vào ASKREM</h3>
+        </div>
+        <div class="modal-body">
+            <form method="post" asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <p><input asp-for="Email" class="form-control" placeholder="Email"/></p>
+                <span asp-validation-for="Email" class="text-danger"></span>
+                <p><input asp-for="Password" class="form-control" placeholder="Mật khẩu"/></p>
+                <p>
+                    <button type="submit" class="btn btn-primary">Đăng nhập</button>
+                    <a asp-action="ForgotPassword">Quên mật khẩu?</a>
+                </p>
+            </form>
+        </div>
+        <div class="modal-footer">
+            Chưa có tài khoản? 
+            <a asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]" class="btn btn-primary">Đăng ký</a>
+        </div>
+    </div>
 </div>
+
 
 @section Scripts {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }

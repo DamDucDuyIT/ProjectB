@@ -1,12 +1,12 @@
 @model ListViewModel
 
 @{
-    ViewData["Title"] = "Question";
+    ViewData["Title"] = "Câu hỏi";
 }
 <div class="row col-lg-offset-8">
     <ul class="nav navbar-nav">
         
-        <li><a asp-action="Index" asp-controller="Question" asp-route-sortOrder="latest">Latest</a></li>
+        <li><a asp-action="Index" asp-controller="Question" asp-route-sortOrder="latest">Mới nhất</a></li>
         <li><a asp-action="Index" asp-controller="Question" asp-route-sortOrder="hot">Hot</a></li>
         <li><a asp-action="Index" asp-controller="Question" asp-route-sortOrder="vote">Vote</a></li>
     </ul>
@@ -19,15 +19,15 @@
     <div class="form-actions no-color col-lg-offset-3">
         <p>
             <input class ="col-sm-6" type="text" name="searchText" value="@ViewData["searchText"]" />
-            <input type="submit" value="Search" class="btn btn-default" /> |
-            <a asp-action="Index" asp-route-page="1">Back to List</a>
+            <input type="submit" value="Tìm câu hỏi" class="btn btn-default" /> |
+            <a asp-action="Index" asp-route-page="1">Quay lại danh sách</a>
         </p>
     </div>
 </form>
     
 
     <p>
-        <a asp-action="Ask">Ask a question</a>
+        <a asp-action="Ask">Đặt câu hỏi</a>
     </p>
     <div class="container">
 
@@ -36,10 +36,10 @@
             <thead>
                 <tr>
                     <th>
-                        QuestionTitle
+                        Tiêu đề
                     </th>
                     <th>
-                        QuestionVote
+                      Vote
                     </th>
                     <th>
                         Tags
