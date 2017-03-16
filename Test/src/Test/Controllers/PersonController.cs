@@ -277,12 +277,16 @@ namespace Test.Controllers
                 person.PersonAvatar = person.PersonID + ".png";
                 await _context.SaveChangesAsync();
 
-                var uploads = Path.Combine(_environment.WebRootPath, "avatars");
-
-                using (var fileStream = new FileStream(Path.Combine(uploads, person.PersonID.ToString() + ".png"), FileMode.Create))
+                if (file != null)
                 {
-                    await file.CopyToAsync(fileStream);
+                    var uploads = Path.Combine(_environment.WebRootPath, "avatars");
+
+                    using (var fileStream = new FileStream(Path.Combine(uploads, person.PersonID.ToString() + ".png"), FileMode.Create))
+                    {
+                        await file.CopyToAsync(fileStream);
+                    }
                 }
+              
 
                 return RedirectToAction("Index","Home");
             }
@@ -368,12 +372,17 @@ namespace Test.Controllers
                         }
                     }
                     await _context.SaveChangesAsync();
-                    var uploads = Path.Combine(_environment.WebRootPath, "avatars");
 
-                    using (var fileStream = new FileStream(Path.Combine(uploads, person.PersonID.ToString() + ".png"), FileMode.Create))
+                    if (file != null)
                     {
-                        await file.CopyToAsync(fileStream);
+                        var uploads = Path.Combine(_environment.WebRootPath, "avatars");
+
+                        using (var fileStream = new FileStream(Path.Combine(uploads, person.PersonID.ToString() + ".png"), FileMode.Create))
+                        {
+                            await file.CopyToAsync(fileStream);
+                        }
                     }
+                   
 
                 }
                 catch (DbUpdateConcurrencyException)
