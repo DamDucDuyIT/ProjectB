@@ -1,0 +1,39 @@
+﻿@model RegisterViewModel
+@{
+    ViewData["Title"] = "ĐĂNG KÝ";
+}
+
+
+<div class="container">
+
+    <div class="col-lg-offset-3 col-lg-5">
+
+        <h1 style="color: black; font-weight: bold">@ViewData["Title"]</h1>
+        <div class="modal-header">
+            <h3>Đăng ký tài khoản để kết nối với ASKREM</h3>
+        </div>
+        <div class="modal-body">
+            <form method="post" asp-controller="Account" asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <p><input asp-for="Email" class="form-control" placeholder="Email" /></p>
+                <span asp-validation-for="Email" class="text-danger"></span>
+                <p><input asp-for="Password" class="form-control" placeholder="Mật khẩu" /></p>
+                <p><input asp-for="ConfirmPassword" class="form-control" placeholder="Xác nhận mật khẩu" /></p>
+                <p>
+                    <button type="submit" class="btn btn-primary">Đăng Ký</button>
+
+                </p>
+            </form>
+        </div>
+
+    </div>
+    <h2 class="col-md-12" style="color: red">Chú ý! Sau khi đăng ký thành công, vui lòng cập nhật thông tin đầy đủ để sử dụng những tính năng cơ bản!</h2>
+
+</div>
+
+
+
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

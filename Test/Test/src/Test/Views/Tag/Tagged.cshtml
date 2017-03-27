@@ -1,0 +1,91 @@
+@model ListViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container">
+    <div class="row col-lg-offset-8">
+        <ul class="nav navbar-nav">
+            <li><a asp-action="Tagged" asp-controller="Tag" asp-route-searchText="@ViewData["searchText"]" asp-route-sortOrder="latest">Latest</a></li>
+            <li><a asp-action="Tagged" asp-controller="Tag" asp-route-searchText="@ViewData["searchText"]" asp-route-sortOrder="hot">Hot</a></li>
+            <li><a asp-action="Tagged" asp-controller="Tag" asp-route-searchText="@ViewData["searchText"]" asp-route-sortOrder="interesting">Interesting</a></li>
+        </ul>
+
+    </div>
+    <hr />
+
+    <form asp-controller="Tag" asp-action="Tagged" method="get">
+        <div class="form-actions no-color col-lg-12 col-lg-offset-3">
+
+            <div class="col-md-6">
+                <div class="input-group">
+                    <input type="text" name="searchText" value="@ViewData["searchText"]" class="form-control" placeholder="Nhập câu hỏi cần tìm...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit">Tìm</button>
+                    </span>
+                </div><!-- /input-group -->
+            </div>
+     
+        </div><!-- /.col-lg-6 -->
+
+    </form>
+
+
+    <p>
+        <a class="btn btn-warning" asp-controller="Question" asp-action="Ask">Đặt câu hỏi</a>
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Tiêu đề
+                </th>
+                <th>
+                    Vote
+                </th>
+                <th>
+                    Tags
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Supports)
+            {
+                <tr>
+
+                    <td>
+                        <a asp-controller="Question" asp-action="Details" asp-route-id="@item.QuestionID">@Html.DisplayFor(modelItem => item.Question.QuestionTitle)</a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Question.QuestionVote)
+                    </td>
+                    <td>
+
+                        @foreach (var tag in item.Question.Supports)
+                        {
+                            <a asp-controller="Tag" asp-action="Index" asp-route-tagName="@tag.Tag.TagName">@tag.Tag.TagName |</a>
+
+                        }
+
+
+                    </td>
+                    @*<td>
+                            <a asp-action="Edit" asp-route-id="@item.QuestionID">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.QuestionID">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.QuestionID">Delete</a>
+                        </td>*@
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div page-model="@Model.PagingInfo" page-action="Tagged" page-classes-enabled="true"
+         page-class="btn" page-class-normal="btn-default"
+         page-class-selected="btn-primary"
+         page-sort-order="@ViewBag.SortOrder" 
+         page-search-text="@ViewBag.SearchText"
+         class="btn-group pull-right">
+    </div>
+</div>

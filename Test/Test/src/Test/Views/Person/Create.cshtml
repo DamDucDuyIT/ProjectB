@@ -1,0 +1,138 @@
+@model Test.Models.Person
+
+<div class="container">
+    <form name="myform" asp-action="Create" method="post" enctype="multipart/form-data">
+        <div class="form-horizontal">
+
+            <hr />
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <div class="form-group">
+                <label class="col-md-4 control-label">Tên hiển thị</label>
+                <div class="col-md-6">
+                    <input asp-for="PersonDisplayName" class="form-control" maxlength="30" placeholder="tối đa 30 kí tự" />
+                    <span asp-validation-for="PersonDisplayName" class="text-danger" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-4 control-label">Họ</label>
+                <div class="col-md-6">
+                    <input asp-for="PersonLastName" class="form-control" maxlength="30" placeholder="tối đa 30 kí tự" />
+                    <span asp-validation-for="PersonLastName" class="text-danger" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-4 control-label">Tên</label>
+                <div class="col-md-6">
+                    <input asp-for="PersonFirstName" class="form-control" maxlength="30" placeholder="tối đa 30 kí tự" />
+                    <span asp-validation-for="PersonFirstName" class="text-danger" />
+                </div>
+            </div>
+
+
+
+            <div class="form-group">
+                <label class="col-md-4 control-label">Sinh nhật(tháng/ngày/năm)</label>
+                <div class="col-md-6" id='datetimepicker1'>
+                    <input asp-for="PersonBirthday" class="form-control" type="text" id="datepicker" runat="server" placeholder="tháng/ngày/năm" />
+
+                    <span asp-validation-for="PersonBirthday" class="text-danger" />
+                </div>
+                <script>
+        $(function () {
+            $("#datepicker").datepicker({
+                changeMonth: true,
+
+                dateFormat: 'mm-dd-yy'
+            });
+        });
+                </script>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-4 control-label">Địa chỉ</label>
+                <div class="col-md-6">
+                    <input asp-for="PersonLocation" class="form-control" maxlength="30" placeholder="tối đa 30 kí tự" />
+                    <span asp-validation-for="PersonLocation" class="text-danger" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-4 control-label">Nghề nghiệp</label>
+                <div class="col-md-6">
+                    <input asp-for="PersonCareer" class="form-control" maxlength="30" placeholder="tối đa 30 kí tự" />
+                    <span asp-validation-for="PersonCareer" class="text-danger" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-4 control-label">Giới thiệu</label>
+                <div class="col-md-6">
+                    <textarea asp-for="PersonAbout" class="form-control" id="about"></textarea>
+                    <span asp-validation-for="PersonAbout" class="text-danger" />
+                </div>
+            </div>
+
+            @*<form method="post" asp-action="Index" asp-controller="Home" enctype="multipart/form-data">
+                    <input type="file" name="files" multiple />
+                    <input type="submit" value="Upload" />
+                </form>*@
+
+            <div class="form-group">
+                <label class="col-md-4 control-label">Cập nhật Avatar</label>
+                <div class="col-md-6">
+                    <input type="file" name="file" multiple />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-4 control-label">Tags</label>
+                <div class="col-md-6">
+                    <input name="selectedTags" maxlength="60" placeholder="Tối đa 5 tag" />
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <div id="alert"></div>
+                    <input type="button" id="btnCreate" value="Tạo" class="btn btn-primary" data-container="#alert" data-toggle="popover" data-placement="right" data-content="Giới thiệu của bạn chỉ được tối đa 300.000 'kí tự' " />
+                </div>
+            </div>
+            <script>
+                    $(function () {
+                        $("#btnCreate").popover({
+                            trigger:'manual'
+                        })
+
+                        $("#btnCreate").click(function (evt) {
+                            var text = window.parent.tinymce.get('about').getContent();
+                            if (text.length > 300000) {
+                                console.log("duy");
+                                $("#btnCreate").popover('show');
+                                return false;
+                            }
+                            else {
+                                document.myform.submit();
+
+                            }
+                        })
+
+                        $("").dblclick(function () {
+                            $("#btnCreate").popover('hide');
+                        })
+
+                    })
+            </script>
+        </div>
+    </form>
+</div>
+
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

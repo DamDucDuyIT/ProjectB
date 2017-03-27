@@ -1,0 +1,196 @@
+﻿@model Test.Models.Question
+@inject UserManager<ApplicationUser> UserManager
+@{
+    ViewData["Title"] = "Nội dung";
+}
+
+<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+
+<div>
+    <h4>Câu hỏi</h4>
+    <hr />
+    <div class="container">
+        <h1 style="color:black">@Html.DisplayFor(model => Model.QuestionTitle)</h1>
+        <hr />
+        <h2>@Html.Raw(Model.QuestionDescription)</h2>
+
+        <div class="row">
+            @foreach (var tag in Model.Supports)
+            {
+                <a asp-controller="Tag" asp-action="Tagged" asp-route-tagName="@tag.Tag.TagName">@tag.Tag.TagName |</a>
+            }
+        </div>
+        <div class="row col-lg-offset-10">
+            <div class="row">
+                <h2 style="color:blue">Người đặt câu hỏi:</h2>
+            </div>
+            <div>
+                <a asp-controller="Person" asp-action="Profile" asp-route-PersonID="@Model.Person.PersonID">
+                    @Html.DisplayFor(model => Model.Person.PersonDisplayName)
+                </a>
+
+            </div>
+        </div>
+
+
+        <div class="row">
+            <form asp-action="Vote">
+                
+                <div id="click_advance">
+                  @{
+                      var userEmail = UserManager.GetUserName(User);
+                      if (Model.Vote.Person.FirstOrDefault(p => p.PersonEmail == userEmail) == null)
+                      {
+                        <a asp-action="Vote" asp-route-id="@Model.QuestionID"><i class="fa fa-thumbs-o-up"></i></a>
+                        
+                      }
+                      else
+                      {
+                        <a asp-action="Revote" asp-route-id="@Model.QuestionID"><i class="fa fa-thumbs-up"></i></a>
+
+
+                      }
+                   
+
+                        
+                    
+                        
+                        
+
+                    
+                    <span style="margin-right:4em">@Model.Vote.Person.Count</span>
+                }                   
+                </div>
+
+                @*<script>
+                    $('#click_advance').click(function () {
+                        icon = $(this).find("i");
+
+                       if(icon.hasClass("fa-thumbs-o-up")){
+                           icon.addClass("fa-thumbs-up").removeClass("fa-thumbs-o-up");
+                           $.ajax({
+                               url: '@Url.Action("Vote","Question")',
+                               data: { id: @Model.QuestionID },
+                               type: 'GET',
+                           });
+                           console.log("duy");
+                           window.location.reload();
+                        }else{
+                           icon.addClass("fa-thumbs-o-up").removeClass("fa-thumbs-up");
+                           $.ajax({
+                               url: '@Url.Action("Revote","Question")',
+                               data: { id: @Model.QuestionID },
+                               type: 'GET',
+                           });
+                           console.log("duy");
+                           window.location.reload();
+                        }
+
+                        //icon.toggleClass("fa-thumbs-o-up fa-thumbs-up");
+                    })
+                </script>*@
+
+                
+            </form>
+            <button class="btn-success btn-lg" href="#giveAnswer" data-toggle="collapse">
+                Câu trả lời của bạn
+            </button>
+
+        </div>
+        <div id="giveAnswer" class="panel-body panel-collapse collapse">
+            <hr />
+            <h2>Câu trả lời của bạn</h2>
+
+            <form asp-action="TakeAnswer" method="get">
+                <div class="form-actions no-color">
+                    <p>
+                        <textarea type="text" id="answerText" name="answerText"></textarea>
+                        @*<input  type="submit" value="Post Your Answer" class="btn btn-success" />*@
+                        <input type="hidden" name="id" value=@Model.QuestionID>
+                        <div id="alert"></div>
+                        <button type="submit" id="btnPostAnswer" class="btn btn-success" data-container="#alert" data-toggle="popover" data-placement="right" data-content="Câu trả lời của bạn chỉ được tối đa 300.000 'kí tự' ">
+                            Post Your Answer
+                        </button>
+                    </p>
+                </div>
+                <script>
+                    $(function () {
+                        $("#btnPostAnswer").popover({
+                            trigger:'manual'
+                        })
+
+                        $("#btnPostAnswer").click(function (evt) {
+                            var text = window.parent.tinymce.get('answerText').getContent();
+                            if (text.length >= 300000) {
+                                console.log('duy');
+                                $("#btnPostAnswer").popover('show');
+                                return false;
+                            }
+                           
+                        })
+
+                        $("btnPostAnswer").dblclick(function () {
+                            $("#btnPostAnswer").popover('hide');
+                        })
+
+                    })
+                </script>
+            </form>
+        </div>
+
+
+        <div class="row">@Html.DisplayFor(model => Model.Answers.Count) câu trả lời</div>
+        <hr />
+        <div id="answers">
+            @foreach (var item in Model.Answers)
+            {
+                <div class="row">
+                    @Html.Raw(item.AnswerDescription)
+                </div>
+                <div class="row">
+                    <form asp-controller="Answer" asp-action="Vote">
+
+                        @*<a class="fa fa-thumbs-o-up" asp-controller="Answer" asp-action="Vote" asp-route-id=@item.AnswerID></a>
+                        <span style="margin-right:4em">@item.Vote</span>*@
+                        @{
+                            var userEmail2 = UserManager.GetUserName(User);
+                            if (@item.Vote2.Person.FirstOrDefault(p => p.PersonEmail == userEmail2) == null)
+                            {
+                                <a asp-action="Vote" asp-controller="Answer" asp-route-id="@item.AnswerID"><i class="fa fa-thumbs-o-up"></i></a>
+
+                            }
+                            else
+                            {
+                                <a asp-action="Revote" asp-controller="Answer" asp-route-id="@item.AnswerID"><i class="fa fa-thumbs-up"></i></a>
+
+                            }
+
+
+                            <span style="margin-right:4em">@item.Vote2.Person.Count</span>
+                        } 
+
+
+                    </form>
+
+                    <div class="col-lg-offset-10">
+                        <h2 style="color:forestgreen">Được trả lời bởi:</h2>
+                    </div>
+                    <div class="col-lg-offset-10">
+                        <a asp-controller="Person" asp-action="Profile" asp-route-PersonID="@item.Person.PersonID">
+                            @item.Person.PersonDisplayName
+                        </a>
+
+                    </div>
+                </div>
+                <hr />
+            }
+        </div>
+
+
+
+
+    </div>
+
+    @*<a asp-action="Edit" asp-route-id="@Model.QuestionID">Edit</a> |
+        <a asp-action="Index">Back to List</a>*@
+</div>

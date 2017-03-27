@@ -1,0 +1,69 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/fontawesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="~/css/admin.css" />
+</head>
+<body>
+
+    <div class="container">
+        <div class="row">
+            <header>
+                <a asp-controller="Admin" asp-action="Question">Trang Admin</a>
+            </header>
+
+            <nav id="sideNavParent" class="pdsa-sn-wrapper">
+                <ul>
+                    <li>
+                        <a asp-controller="Home" asp-action="Index" class="pdsa-sn-brand
+                               visible-sm visible-md visible-sm visible-lg">
+                            Music
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-controller="Home" asp-action="Index">
+                            <span class="visible-sm visible-md visible-sm visible-lg">Trang chủ</span>
+                            <i class="fa fa-home visible-xs"></i>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a asp-controller="Admin" asp-action="Question">
+                            <span class="visible-sm visible-md visible-sm visible-lg">Câu hỏi</span>
+                            <i class="fa fa-music visible-xs"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-controller="Admin" asp-action="User">
+                            <span class="visible-sm visible-md visible-sm visible-lg">Người dùng</span>
+                            <i class="fa fa-download visible-xs"></i>
+
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-controller="Admin" asp-action="Tag">
+                            <span class="visible-sm visible-md visible-sm visible-lg">Tag</span>
+                            <i class="fa fa-download visible-xs"></i>
+
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+
+    </div>
+
+    <div class="body-content" style="margin-top:5em">
+        @RenderBody()
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

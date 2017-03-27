@@ -1,0 +1,164 @@
+﻿@model Test.Models.Person
+
+
+
+
+
+    @*<div>
+        <h4>Person</h4>
+        <hr />
+        <dl class="dl-horizontal">
+          
+           
+            <dt>
+                @Html.DisplayNameFor(model => model.PersonDisplayName)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.PersonDisplayName)
+            </dd>
+         
+            <dt>
+                @Html.DisplayNameFor(model => model.PersonFirstName)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.PersonFirstName)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.PersonLastName)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.PersonLastName)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.PersonLocation)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.PersonLocation)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.PersonBirthday)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.PersonBirthday)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.PersonCareer)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.PersonCareer)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.PersonAbout)
+            </dt>
+            <dd>
+                @Html.Raw( Model.PersonAbout)
+            </dd>
+        </dl>
+    </div>
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.PersonID">Edit</a> |
+        <a asp-action="Index">Back to List</a>
+    </div>*@
+<div class="container">
+    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad">
+
+
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">@Model.PersonDisplayName</h3>
+            </div>
+            <div class="panel-body" style="background-color:white">
+                <div class="row">
+                    <div class="col-md-3 col-lg-3 " align="center"> <img alt="avatar" src='~/avatars/@Model.PersonAvatar' class="img-circle img-responsive"> </div>
+
+                    <div class="col-md-9 col-lg-9">
+                        <table class="table table-user-information">
+                            <tbody>
+                                <tr>
+                                    <td>Tên:</td>
+                                    <td>@Model.PersonFirstName</td>
+                                </tr>
+                                <tr>
+                                    <td>Họ:</td>
+                                    <td>@Model.PersonLastName</td>
+                                </tr>
+                                <tr>
+                                    <td>Score:</td>
+                                    @*<td>@Model.Score</td>*@
+                                    @{
+
+                                        long score = Model.Questions.Count * 3 + Model.Answers.Count * 3;
+                                        foreach (var question in Model.Questions)
+                                        {
+                                            if (question.Vote.Person == null)
+                                            {
+                                                continue;
+                                            }
+                                            score += question.Vote.Person.Count * 5;
+                                        }
+                                        foreach (var answer in Model.Answers)
+                                        {
+                                            if (answer.Vote2.Person == null)
+                                            {
+                                                continue;
+                                            }
+                                            score += answer.Vote2.Person.Count * 10;
+                                        }
+                                        <td>@score</td>
+                                        
+                                    }
+                                </tr>
+                                <tr>
+                                    <td>Sinh nhật:</td>
+                                    <td>@Model.PersonBirthday.Day tháng @Model.PersonBirthday.Month @Model.PersonBirthday.Year</td>
+                                </tr>
+
+                                <tr>
+                                <tr>
+                                    <td>Địa chỉ:</td>
+                                    <td>@Model.PersonLocation</td>
+                                </tr>
+                                <tr>
+                                    <td>Nghề nghiệp:</td>
+                                    <td>@Model.PersonCareer</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Tag:</td>
+                                    <td>
+                                        @foreach (var tag in Model.Support2s)
+                                        {
+                                            <a asp-controller="Tag" asp-action="Tagged" asp-route-tagName="@tag.Tag.TagName">@tag.Tag.TagName &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;</a>
+
+                                        }
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Giới thiệu:</td>
+                                    <td>@Html.Raw(Model.PersonAbout)</td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+
+                <span class="pull-right">
+                    @if (ViewData["UserEmailConfirm"].Equals("yes"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@Model.PersonID" data-original-title="Edit this user" data-toggle="tooltip" type="button" class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-edit"></i></a>
+                    }
+                    <a asp-action="Index" data-original-title="Back to List" data-toggle="tooltip" type="button" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-backward"></i></a>
+                </span>
+            </div>
+
+        </div>
+    </div>
+
+
+</div>

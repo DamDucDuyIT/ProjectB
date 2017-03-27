@@ -1,0 +1,76 @@
+﻿@model ListViewModel
+
+@{
+    ViewData["Title"] = "Người dùng_Admin";
+    Layout = "_AdminLayout";
+}
+
+<div  class="container">
+
+        <form asp-action="User" method="get">
+            <div class="form-actions no-color">
+                <p>
+                    Tìm theo tên: <input type="text" name="searchText" value="@ViewData["searchText"]" />
+                    Tìm theo tag: <input type="text" name="sortTag" value="@ViewData["sortTag"]" />
+                    &nbsp; &nbsp; <input type="submit" value="Tìm kiếm" class="btn btn-primary" style="height:55px" />
+
+                </p>
+
+            </div>
+        </form>
+ 
+    <div class="row">
+            @foreach (var item in Model.Persons)
+            {
+                <div class="col-md-6">
+
+                    <div class="panel panel-success" style="width:100%; nowrap;overflow: hidden;text-overflow: ellipsis">
+                        <div class="panel-heading">                       
+                                <a class="post-tag" asp-controller="Person" asp-action="Profile" asp-route-PersonID="@item.PersonID"><h2 class="panel-title">@item.PersonDisplayName</h2></a>                                        
+                        </div>
+                        <form asp-action="DeleteUser" asp-route-PersonID="@item.PersonID">
+                            <button type="submit" class="btn btn-danger pull-right"><i class="fa fa-remove"></i></button>
+
+                        </form>
+                            <div class="panel-body" style="background-color:white">
+                                <div class="col-lg-3">
+                                    <img alt="avatar" src='~/avatars/@item.PersonAvatar' class="img-circle img-responsive" style="width:6em;height:6em">
+
+                                </div>
+                                <div class="user-info col-lg-9">
+                                    <span><strong>Nghề nghiệp:</strong> @item.PersonCareer</span><br />
+                                    <span><strong>Địa chỉ:</strong> @item.PersonLocation</span><br />
+                                    <span><strong>Score:</strong> @item.Score</span>
+                                </div>
+
+                            </div>
+
+                            <div class="panel-footer">
+                                <div>
+
+
+                                    @foreach (var tag in item.Support2s)
+                                    {
+                                        <a asp-controller="Tag" asp-action="Tagged" asp-route-tagName="@tag.Tag.TagName">@tag.Tag.TagName &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;</a>
+
+                                    }
+
+                                </div>
+                            </div>
+</div>
+
+                </div>
+
+            }
+        </div>
+        <div page-model="@Model.PagingInfo" page-action="User" page-classes-enabled="true"
+             page-class="btn" page-class-normal="btn-default"
+             page-class-selected="btn-primary"
+             page-sort-tag="@ViewBag.sortTag" 
+             page-search-text="@ViewBag.SearchText"
+             class="btn-group pull-right">
+        </div>
+    </div>
+
+
+

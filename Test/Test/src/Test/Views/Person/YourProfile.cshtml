@@ -1,0 +1,120 @@
+﻿@model Test.Models.Person
+
+
+
+
+
+@{
+    ViewData["Title"] = "Thông tin người dùng";
+}
+<div class="row col-lg-offset-8" style="margin-top: 1.5em">
+    <a class="btn btn-primary" asp-controller="Person" asp-action="YourProfile">Thông tin</a>
+    <a class="btn btn-primary" asp-controller="Person" asp-action="Activity">Hoạt động</a>
+</div>
+<hr />
+
+
+<div class="container">
+    <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad">
+
+
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">@Model.PersonDisplayName</h3>
+            </div>
+            <div class="panel-body" style="background-color:white">
+                <div class="row">
+                    <div class="col-md-3 col-lg-3 " align="center"> <img alt="avatar" src='~/avatars/@Model.PersonAvatar' class="img-circle img-responsive"> </div>
+
+
+
+
+
+                    <div class="col-md-9 col-lg-9">
+                        <table class="table table-user-information">
+                            <tbody>
+                                <tr>
+                                    <td>Tên:</td>
+                                    <td>@Model.PersonFirstName</td>
+                                </tr>
+                                <tr>
+                                    <td>Họ:</td>
+                                    <td>@Model.PersonLastName</td>
+                                </tr>
+                                <tr>
+                                    <td>Score:</td>
+                                    @*<td>@Model.Score</td>*@
+                                    @{
+
+                                        long score = Model.Questions.Count * 3 + Model.Answers.Count * 3;
+                                        foreach (var question in Model.Questions)
+                                        {
+                                            if (question.Vote.Person == null)
+                                            {
+                                                continue;
+                                            }
+                                            score += question.Vote.Person.Count * 5;
+                                        }
+                                        foreach (var answer in Model.Answers)
+                                        {
+                                            if (answer.Vote2.Person == null)
+                                            {
+                                                continue;
+                                            }
+                                            score += answer.Vote2.Person.Count * 10;
+                                        }
+                                        <td>@score</td>
+
+                                    }
+                                </tr>
+                                <tr>
+                                    <td>Sinh nhật:</td>
+                                    @*<td>@Html.DisplayFor(model => model.PersonBirthday)</td>*@
+                                    <td>@Model.PersonBirthday.Day tháng @Model.PersonBirthday.Month @Model.PersonBirthday.Year</td>
+                                </tr>
+
+                                <tr>
+                                <tr>
+                                    <td>Địa chỉ:</td>
+                                    <td>@Model.PersonLocation</td>
+                                </tr>
+                                <tr>
+                                    <td>Nghề nghiệp:</td>
+                                    <td>@Model.PersonCareer</td>
+                                </tr>
+                                <tr>
+                                    <td>Tag:</td>
+                                    <td>
+                                        @foreach (var tag in Model.Support2s)
+                                        {
+                                            <a asp-controller="Tag" asp-action="Tagged" asp-route-tagName="@tag.Tag.TagName">@tag.Tag.TagName &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;</a>
+
+                                        }
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Giới thiệu:</td>
+                                    <td>@Html.Raw(Model.PersonAbout)</td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer" style="padding: 20px 20px 40px 20px">
+
+                <span class="pull-right">
+
+                    <a asp-action="Edit" asp-route-id="@Model.PersonID" data-original-title="Edit this user" data-toggle="tooltip" type="button" class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-edit"></i></a>
+
+                    <a asp-action="Index" data-original-title="Back to List" data-toggle="tooltip" type="button" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-backward"></i></a>
+                </span>
+            </div>
+
+        </div>
+    </div>
+
+
+</div>

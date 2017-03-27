@@ -1,0 +1,84 @@
+@model Test.Models.Question
+
+@{
+    ViewData["Title"] = "Đặt câu hỏi";
+    Layout = "_Layout";
+}
+
+<div class="container">
+    <h2><strong>ĐẶT CÂU HỎI</strong></h2>
+
+    <form asp-action="Ask">
+        <div class="form-horizontal">
+
+            <hr />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label"  style="font-size:x-large">Tiêu đề</label>
+                <div class="col-md-10">
+                    <input asp-for="QuestionTitle" class="form-control" maxlength="200" placeholder="Tối đa 200 kí tự" />
+                    <span asp-validation-for="QuestionTitle" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label"  style="font-size:x-large">Nội dung</label>
+                <div class="col-md-10">
+                    <textarea asp-for="QuestionDescription" class="form-control" id="questionText"></textarea>
+                    <span asp-validation-for="QuestionDescription" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label"  style="font-size:x-large">Tags</label>
+                <div class="col-md-10">
+                    <input name="selectedTags" maxlength="60" placeholder="Tối đa 5 tag" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <div id="alert"></div>
+                    <input type="submit" id="btnPostQuestion" value="Đăng" class="btn btn-default" data-container="#alert" data-toggle="popover" data-placement="right" data-content="Câu hỏi của bạn chỉ được tối đa 300.000 'kí tự' " />
+                </div>
+            </div>
+
+            <script>
+                $(function () {
+                    $("#btnPostQuestion").popover({
+                        trigger: 'manual'
+                    })
+
+                    $("#btnPostQuestion").click(function (evt) {
+                        var text = window.parent.tinymce.get('questionText').getContent();
+                        if (text.length > 300000) {
+                            console.log("duy")
+                            $("#btnPostQuestion").popover('show');
+                            return false;
+                        }
+                    })
+
+                    $("").dblclick(function () {
+                        $("#btnPostQuestion").popover('hide');
+                    })
+
+                })
+            </script>
+
+        </div>
+
+
+    </form>
+
+    <div>
+        <a asp-action="Index">Quay lại danh sách</a>
+    </div>
+</div>
+
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

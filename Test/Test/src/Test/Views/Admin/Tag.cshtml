@@ -1,0 +1,53 @@
+﻿@model ListViewModel
+@{
+    ViewData["Title"] = "Tag_Admin";
+    Layout = "_AdminLayout";
+}
+
+
+@*<a class="post-tag" asp-controller="Tag" asp-action="Tagged" asp-route-tagName="@item.TagName"><h2>@item.TagName</h2></a>*@
+
+<div class="container">
+    <div style="margin-left: 12em">
+        <div style="margin-top: 2em">
+            <form asp-controller="Tag" asp-action="Index" method="get">
+                <div class="col-md-12" style="margin-bottom: 3em">
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <input type="text" name="searchText" value="@ViewData["searchText"]" class="form-control" placeholder="Nhập câu hỏi cần tìm...">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="submit">Tìm</button>
+                            </span>
+                        </div><!-- /input-group -->
+                    </div>
+                    <div class="col-md-3">
+                        <a class="btn btn-primary" asp-action="Index" asp-route-page="1">Quay lại danh sách</a>
+                    </div>
+                </div>
+
+            </form>
+            @foreach (var item in Model.Tags)
+            {
+                <a class="col-md-3 tagName" asp-action="Tagged" asp-controller="Tag" asp-route-tagName="@item.TagName" style="border: solid 1px black;text-align:center">
+                    <h2 style="font-size: 20px;">@item.TagName</h2>
+                    <form asp-action="DeleteTag" asp-route-TagID="@item.TagID">
+
+                        <button type="submit" class="btn btn-danger"><i class="fa fa-remove"></i></button>
+                    </form>
+                </a>
+            }
+        </div>
+        <div class="col-md-4 col-md-offset-6" style="margin-top: 5em">
+            <div page-model="@Model.PagingInfo" page-action="Tag" page-classes-enabled="true"
+                 page-class="btn" page-class-normal="btn-primary"
+                 page-class-selected="btn-success"
+                 page-sort-order="@ViewBag.SortOrder" 
+                page-search-text="@ViewBag.SearchText"
+                 class="btn-group pull-right">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

@@ -1,0 +1,115 @@
+﻿
+
+.container {
+    width: 100%;
+}
+
+.body-content {
+    margin-top:2em;
+    margin-left: 16.5em;
+    transition: margin-left ease 0.5s;
+    width: 75%;
+}
+
+
+/*-----------------------------------------------------------------*/
+.pdsa-sn-brand {
+    font-size: large;
+    margin-left: -0.5em;
+}
+/*-----------------------------------------------------------------*/
+
+.pdsa-sn-wrapper {
+    background-color: #000000;
+    height: 100%;
+    position: fixed;
+    width: 10em;
+    left:0;
+    transition: left ease 0.5s
+}
+
+    .pdsa-sn-wrapper ul {
+        list-style: none;
+        padding-left: 1.5em;
+        padding-top: 1em;
+    }
+
+        .pdsa-sn-wrapper ul li {
+            padding-bottom: 2em;
+        }
+
+            .pdsa-sn-wrapper ul li a {
+                color: lightgray;
+            }
+
+                .pdsa-sn-wrapper ul li a:hover,
+                .pdsa-sn-wrapper ul li a:active {
+                    color: red;
+                    text-decoration: none;
+                }
+
+                .pdsa-sn-wrapper ul li a:focus {
+                    color: red;
+                    outline: none;
+                    text-decoration: none;
+                }
+/*-----------------------------------------------------------------*/
+header {
+    background-color: gray;
+    font-size: large;
+
+    padding: 0.5em;
+     position:fixed;
+              top:0px;
+              right:0px;
+              left:0px;
+              z-index:10;
+  
+
+}
+
+    header a {
+        color: white;
+    }
+
+        header a:focus {
+            color: red;
+            outline: none;
+            text-decoration: none;
+        }
+
+        header a:hover {
+            color: red;
+            text-decoration: none;
+        }
+
+        @media all and (max-width :768px){
+            .body-content{
+                top:50px;
+                margin-left:3em;
+                transition: margin-left ease 0.5s
+               
+            }
+         
+
+            .pdsa-sn-wrapper{
+                left:-12em;
+                transition: margin-left ease 0.5s
+            }
+
+            .pdsa-sn-wrapper ul li a i{
+                padding-bottom:0.5em;
+                padding-left:11.5em;
+            }
+        }
+
+.tagName {
+    border: solid 1px black;
+    margin: 1px;
+    text-align: center;
+    text-transform: uppercase;
+    background-color: #99CCFF;
+    color: black;
+    padding-bottom: 5px;
+}
+

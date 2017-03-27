@@ -1,0 +1,28 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Test.Models
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <form asp-area="" asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm" class="row pull-right">
+
+        <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage" class="userName">@UserManager.GetUserName(User)!</a>
+
+
+        <button type="submit" class="btn btn-danger">Đăng xuất</button>
+
+    </form>
+}
+else
+{
+    <div class="row pull-right">
+        <a asp-area="" asp-controller="Account" asp-action="Register" class="btn btn-primary btn-rounded">Đăng ký</a>
+        <a asp-area="" asp-controller="Account" asp-action="Login" class="btn btn-primary btn-rounded">Đăng nhập</a>
+        @*<a data-toggle="modal" href="#myModal" class="btn btn-success btn-rounded col-lg-4 col-lg-offset-1">Log in</a>*@
+
+
+
+    </div>
+}
